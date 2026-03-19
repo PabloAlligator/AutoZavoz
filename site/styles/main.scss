@@ -1,0 +1,34 @@
+@import '../styles/header.scss';
+
+html,
+body {
+    background: #000;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+$white: #ffffffe8;
+$black: #000000;
+$red: #ff0000cc;
+$grey: #808080;
+$inter: inter;
+$RussoOne: russoone;
+
+@font-face {
+    font-family: inter;
+    src: url(../fonts/Inter_18pt-Medium.ttf);
+}
+
+@font-face {
+    font-family: oswald;
+    src: url(../fonts/Oswald-Medium.ttf);
+}
+
+@font-face {
+    font-family: russoone;
+    src: url(../fonts/RussoOne-Regular.ttf);
+}
