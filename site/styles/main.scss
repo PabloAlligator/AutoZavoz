@@ -18,6 +18,7 @@ $overlay-light: rgba(0, 0, 0, 0.3);
 $border-light: rgba(255, 255, 255, 0.24);
 $inter: inter;
 $RussoOne: russoone;
+$oswald: oswald;
 
 // Миксины
 @mixin flex-center {
@@ -468,5 +469,90 @@ body.no-scroll {
     .btn {
         max-width: 100%;
         border-radius: 10px;
+    }
+}
+
+// section two 
+
+.section-two {
+    width: 100%;
+    max-width: 1720px;
+    justify-self: center;
+    padding: 64px 20px;
+    gap: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    &__title {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        h2 {
+            font-size: 48px;
+            line-height: 1.2;
+            letter-spacing: 2px;
+            font-weight: 700;
+            font-family: $RussoOne;
+            color: $white-main;
+
+            span {
+                color: $orange-light;
+            }
+        }
+
+        p {
+            font-size: 24px;
+            text-align: center;
+            line-height: 1.2;
+            letter-spacing: 1.1px;
+            color: $white-soft;
+        }
+    }
+
+    &__block {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        grid-template-rows: repeat(2, 1fr);
+        gap: 32px;
+
+    }
+
+    &__item {
+        display: flex;
+        flex-direction: column;
+        align-items: start;
+        gap: 16px;
+        border-radius: 20px;
+        padding: 24px;
+        background: rgba(255, 255, 255, 0.08);
+        transition: all 0.45s ease;
+
+        img {
+            display: block;
+            width: 40px;
+            height: auto;
+            object-fit: cover;
+        }
+
+        h3 {
+            color: $white-main;
+            font-size: 28px;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+        p {
+            color: $white-soft;
+            font-size: 18px;
+            line-height: 1.2;
+            letter-spacing: 1.1px;
+        }
+
+        &:hover {
+            border: 1px solid rgba(255, 132, 0, 0.28);
+        }
     }
 }
