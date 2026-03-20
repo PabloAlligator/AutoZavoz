@@ -255,8 +255,8 @@ body.no-scroll {
 
         &:hover {
             background: rgba(255, 255, 255, 0.08);
-            border-color: rgba(255, 132, 0, 0.45);
-            color: $orange-light;
+            border-color: #ff5a00;
+            color: $orange-dark;
         }
     }
 }
@@ -478,7 +478,7 @@ body.no-scroll {
     width: 100%;
     max-width: 1720px;
     justify-self: center;
-    padding: 64px 20px;
+    padding: 96px 32px;
     gap: 40px;
     display: flex;
     flex-direction: column;
@@ -575,6 +575,10 @@ body.no-scroll {
     &-container {
         max-width: 1720px;
         width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: start;
+        gap: 32px;
     }
 
     &__title {
@@ -582,7 +586,7 @@ body.no-scroll {
         flex-direction: column;
         align-items: start;
         justify-content: space-between;
-        gap: 16px;
+        gap: 48px;
 
         h2 {
             font-size: 48px;
@@ -612,7 +616,6 @@ body.no-scroll {
         align-items: center;
         justify-content: space-between;
         gap: 32px;
-        margin-top: 48px;
 
         &-item {
             display: flex;
@@ -633,6 +636,7 @@ body.no-scroll {
                 color: $white-soft;
                 font-size: 14px;
                 text-align: center;
+                margin-top: -8px;
             }
         }
 
@@ -645,6 +649,691 @@ body.no-scroll {
             font-size: 20px;
             letter-spacing: 1.6px;
             border: 2px solid $orange-dark;
+        }
+    }
+}
+
+// section cars
+
+.cars {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 96px 32px;
+
+    &-container {
+        max-width: 1720px;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: start;
+        gap: 48px;
+    }
+
+    &__title {
+        display: flex;
+        flex-direction: column;
+        align-items: start;
+        justify-content: space-between;
+        gap: 48px;
+
+        h2 {
+            font-size: 48px;
+            line-height: 1.2;
+            letter-spacing: 2px;
+            font-weight: 700;
+            font-family: $RussoOne;
+            color: $white-main;
+
+            span {
+                color: $orange-dark;
+            }
+        }
+
+        &-inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 32px;
+        }
+
+        a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 220px;
+            min-height: 58px;
+            padding: 0 28px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-family: $RussoOne;
+            font-size: 15px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+            will-change: transform;
+            color: $white-main;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid $border-light;
+            backdrop-filter: blur(8px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+
+            &:hover {
+                background: rgba(255, 255, 255, 0.08);
+                border-color: #ff5a00;
+                color: $orange-dark;
+            }
+
+            &:active {
+                transform: translateY(0);
+            }
+        }
+
+        p {
+            font-size: 24px;
+            line-height: 1.2;
+            letter-spacing: 1.1px;
+            color: $white-soft;
+            max-width: 600px;
+        }
+    }
+
+    &__inner {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        grid-template-rows: repeat(2, 1fr);
+        place-items: center;
+        gap: 32px;
+        width: 100%;
+    }
+
+    .cars-card {
+        width: 320px;
+        border-radius: 12px;
+        overflow: hidden;
+        background: linear-gradient(180deg, #171924 0%, #11131b 100%);
+        border: 1.5px solid $orange-dark;
+        box-shadow:
+            0 16px 40px rgba(0, 0, 0, 0.38),
+            0 2px 12px rgba(0, 0, 0, 0.2);
+        color: $white-main;
+        position: relative;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+        &:hover {
+            transform: translateY(-4px);
+            box-shadow:
+                0 24px 48px rgba(0, 0, 0, 0.45),
+                0 8px 18px rgba(255, 106, 0, 0.08);
+
+            .cars-card__badge {
+                border-color: $orange-dark;
+                color: $orange-dark;
+            }
+        }
+
+        &__image {
+            position: relative;
+            height: 230px;
+            background:
+                linear-gradient(180deg,
+                    rgba(239, 222, 215, 0.9) 0%,
+                    rgba(75, 71, 88, 0.2) 55%,
+                    rgba(16, 18, 27, 0.95) 100%),
+                url("img/car.png") center center / cover no-repeat;
+        }
+
+        &:nth-child(1) {
+            .cars-card__image {
+                background:
+                linear-gradient(180deg,
+                    rgba(239, 222, 215, 0.9) 0%,
+                    rgba(75, 71, 88, 0.2) 55%,
+                    rgba(16, 18, 27, 0.95) 100%),
+                url("../img/mersCLA1802015.jpg") center center / cover no-repeat;
+            }
+        }
+
+        &:nth-child(2) {
+            .cars-card__image {
+                background:
+                linear-gradient(180deg,
+                    rgba(239, 222, 215, 0.9) 0%,
+                    rgba(75, 71, 88, 0.2) 55%,
+                    rgba(16, 18, 27, 0.95) 100%),
+                url("../img/landCruiser300.jpg") center center / cover no-repeat;
+            }
+        }
+
+        &:nth-child(3) {
+            .cars-card__image {
+                background:
+                linear-gradient(180deg,
+                    rgba(239, 222, 215, 0.9) 0%,
+                    rgba(75, 71, 88, 0.2) 55%,
+                    rgba(16, 18, 27, 0.95) 100%),
+                url("../img/crown2019.jpg") center center / cover no-repeat;
+            }
+        }
+
+        &:nth-child(4) {
+            .cars-card__image {
+                background:
+                linear-gradient(180deg,
+                    rgba(239, 222, 215, 0.9) 0%,
+                    rgba(75, 71, 88, 0.2) 55%,
+                    rgba(16, 18, 27, 0.95) 100%),
+                url("../img/kiak5.jpg") center center / cover no-repeat;
+            }
+        }
+
+        &:nth-child(5) {
+            .cars-card__image {
+                background:
+                linear-gradient(180deg,
+                    rgba(239, 222, 215, 0.9) 0%,
+                    rgba(75, 71, 88, 0.2) 55%,
+                    rgba(16, 18, 27, 0.95) 100%),
+                url("../img/hyundaiPalisade.jpg") center center / cover no-repeat;
+            }
+        }
+
+        &:nth-child(6) {
+            .cars-card__image {
+                background:
+                linear-gradient(180deg,
+                    rgba(239, 222, 215, 0.9) 0%,
+                    rgba(75, 71, 88, 0.2) 55%,
+                    rgba(16, 18, 27, 0.95) 100%),
+                url("../img/geelYMonjaro2023.jpg") center center / cover no-repeat;
+            }
+        }
+
+        &:nth-child(7) {
+            .cars-card__image {
+                background:
+                linear-gradient(180deg,
+                    rgba(239, 222, 215, 0.9) 0%,
+                    rgba(75, 71, 88, 0.2) 55%,
+                    rgba(16, 18, 27, 0.95) 100%),
+                url("../img/camry.jpg") center center / cover no-repeat;
+            }
+        }
+
+        &:nth-child(8) {
+            .cars-card__image {
+                background:
+                linear-gradient(180deg,
+                    rgba(239, 222, 215, 0.9) 0%,
+                    rgba(75, 71, 88, 0.2) 55%,
+                    rgba(16, 18, 27, 0.95) 100%),
+                url("../img/bmw5g30.jpg") center center / cover no-repeat;
+            }
+        }
+
+        &__image::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background:
+                linear-gradient(180deg,
+                    rgba(0, 0, 0, 0) 35%,
+                    rgba(0, 0, 0, 0.18) 58%,
+                    rgba(12, 13, 20, 0.78) 100%);
+            pointer-events: none;
+        }
+
+        &__badge {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            z-index: 2;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8px 14px;
+            min-height: 34px;
+            border-radius: 12px;
+            text-transform: uppercase;
+            will-change: transform;
+            color: $white-main;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid $border-light;
+            backdrop-filter: blur(8px);
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            white-space: nowrap;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+        }
+
+        &__content {
+            padding: 18px 20px 18px;
+            margin-top: -6px;
+            position: relative;
+            z-index: 2;
+            background: linear-gradient(180deg, rgba(17, 19, 27, 0.2) 0%, #12131b 18%);
+        }
+
+        &__title {
+            margin: 0 0 10px;
+            font-size: 21px;
+            line-height: 1.15;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            color: $white-main;
+        }
+
+        &__meta {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            flex-wrap: wrap;
+            margin-bottom: 22px;
+        }
+
+        &__meta-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            line-height: 1;
+            color: $white-soft;
+            font-weight: 500;
+        }
+
+        &__dot {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            border: 2px solid rgba(255, 106, 0, 0.95);
+            position: relative;
+            flex: 0 0 14px;
+
+            &::after {
+                content: "";
+                position: absolute;
+                inset: 3px;
+                border-radius: 50%;
+                background: $orange-dark;
+            }
+        }
+
+        &__bottom {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 14px;
+        }
+
+        &__price {
+            font-size: 19px;
+            line-height: 1;
+            font-weight: 800;
+            color: $white-main;
+            letter-spacing: -0.02em;
+        }
+
+        &__arrow {
+            width: 34px;
+            height: 34px;
+            border: none;
+            background: transparent;
+            color: rgba(255, 255, 255, 0.78);
+            font-size: 28px;
+            line-height: 1;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: color 0.25s ease, transform 0.25s ease;
+            padding: 0;
+
+            &:hover {
+                color: $orange-dark;
+                transform: translateX(3px);
+            }
+        }
+    }
+}
+
+@media (max-width: 1440px) {
+    .cars {
+        padding: 88px 24px;
+
+        &__inner {
+            grid-template-columns: repeat(4, minmax(260px, 1fr));
+            gap: 24px;
+        }
+
+        .cars-card {
+            width: 100%;
+            max-width: 320px;
+        }
+    }
+}
+
+@media (max-width: 1200px) {
+    .cars {
+        padding: 80px 24px;
+
+        &-container {
+            gap: 40px;
+        }
+
+        &__title {
+            gap: 36px;
+
+            h2 {
+                font-size: 42px;
+            }
+
+            &-inner {
+                width: 100%;
+                align-items: flex-start;
+                gap: 24px;
+            }
+
+            p {
+                font-size: 21px;
+                max-width: 520px;
+            }
+        }
+
+        &__inner {
+            grid-template-columns: repeat(3, minmax(260px, 1fr));
+            grid-template-rows: auto;
+            gap: 24px;
+        }
+
+        .cars-card {
+            width: 100%;
+            max-width: 100%;
+        }
+    }
+}
+
+@media (max-width: 992px) {
+    .cars {
+        padding: 72px 20px;
+
+        &-container {
+            gap: 36px;
+        }
+
+        &__title {
+            gap: 28px;
+
+            h2 {
+                font-size: 38px;
+                line-height: 1.15;
+            }
+
+            &-inner {
+                flex-direction: column;
+                align-items: flex-start;
+                justify-content: flex-start;
+                gap: 20px;
+            }
+
+            p {
+                font-size: 20px;
+                max-width: 100%;
+            }
+
+            a {
+                min-width: 220px;
+                min-height: 54px;
+                padding: 0 24px;
+                font-size: 14px;
+            }
+        }
+
+        &__inner {
+            grid-template-columns: repeat(2, minmax(280px, 1fr));
+            gap: 24px;
+        }
+
+        .cars-card {
+            max-width: 100%;
+
+            &__image {
+                height: 220px;
+            }
+
+            &__title {
+                font-size: 20px;
+            }
+
+            &__meta-item {
+                font-size: 13px;
+            }
+
+            &__price {
+                font-size: 18px;
+            }
+        }
+    }
+}
+
+@media (max-width: 768px) {
+    .cars {
+        padding: 64px 16px;
+
+        &-container {
+            gap: 32px;
+        }
+
+        &__title {
+            gap: 24px;
+
+            h2 {
+                font-size: 32px;
+                letter-spacing: 1px;
+            }
+
+            p {
+                font-size: 18px;
+                line-height: 1.35;
+                letter-spacing: 0.4px;
+            }
+
+            a {
+                width: 100%;
+                max-width: 320px;
+                min-width: unset;
+                min-height: 52px;
+                font-size: 13px;
+                padding: 0 20px;
+            }
+        }
+
+        &__inner {
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+
+        .cars-card {
+            width: 100%;
+            max-width: 100%;
+
+            &__image {
+                height: 230px;
+            }
+
+            &__content {
+                padding: 18px 18px 18px;
+            }
+
+            &__badge {
+                top: 14px;
+                right: 14px;
+                min-height: 32px;
+                padding: 7px 12px;
+                font-size: 10px;
+            }
+
+            &__title {
+                font-size: 20px;
+            }
+
+            &__meta {
+                gap: 14px;
+                margin-bottom: 18px;
+            }
+
+            &__meta-item {
+                font-size: 13px;
+            }
+
+            &__price {
+                font-size: 18px;
+            }
+        }
+    }
+}
+
+@media (max-width: 576px) {
+    .cars {
+        padding: 56px 14px;
+
+        &-container {
+            gap: 28px;
+        }
+
+        &__title {
+            h2 {
+                font-size: 28px;
+            }
+
+            p {
+                font-size: 16px;
+            }
+
+            a {
+                max-width: 100%;
+                min-height: 50px;
+                border-radius: 10px;
+                font-size: 12px;
+                letter-spacing: 0.03em;
+            }
+        }
+
+        .cars-card {
+            border-radius: 10px;
+
+            &__image {
+                height: 210px;
+            }
+
+            &__content {
+                padding: 16px;
+            }
+
+            &__title {
+                font-size: 18px;
+                margin-bottom: 8px;
+            }
+
+            &__meta {
+                gap: 10px;
+                margin-bottom: 16px;
+            }
+
+            &__meta-item {
+                gap: 6px;
+                font-size: 12px;
+            }
+
+            &__dot {
+                width: 12px;
+                height: 12px;
+                flex: 0 0 12px;
+
+                &::after {
+                    inset: 2px;
+                }
+            }
+
+            &__price {
+                font-size: 17px;
+            }
+
+            &__arrow {
+                width: 30px;
+                height: 30px;
+                font-size: 24px;
+            }
+
+            &__badge {
+                top: 12px;
+                right: 12px;
+                padding: 6px 10px;
+                min-height: 30px;
+                font-size: 9px;
+                border-radius: 10px;
+            }
+        }
+    }
+}
+
+@media (max-width: 420px) {
+    .cars {
+        padding: 48px 12px;
+
+        &__title {
+            h2 {
+                font-size: 24px;
+            }
+
+            p {
+                font-size: 15px;
+            }
+
+            a {
+                min-height: 48px;
+                font-size: 11px;
+                padding: 0 16px;
+            }
+        }
+
+        .cars-card {
+            &__image {
+                height: 190px;
+            }
+
+            &__content {
+                padding: 14px;
+            }
+
+            &__title {
+                font-size: 17px;
+            }
+
+            &__meta {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 8px;
+            }
+
+            &__meta-item {
+                font-size: 12px;
+            }
+
+            &__bottom {
+                gap: 10px;
+            }
+
+            &__price {
+                font-size: 16px;
+            }
+
+            &__badge {
+                font-size: 8px;
+                padding: 6px 8px;
+            }
         }
     }
 }
