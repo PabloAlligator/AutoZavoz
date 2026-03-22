@@ -73,9 +73,8 @@ if (header) {
     });
 }
 
-// =========================
 // 3. Плавный скролл к секциям
-// =========================
+
 document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('a[href^="#"]').forEach(link => {
         link.addEventListener('click', function (e) {
@@ -105,7 +104,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-
+// SWIPER
 
 const reviewsSwiper = new Swiper('.otzyvy-slider', {
     slidesPerView: 3,
@@ -138,8 +137,7 @@ const reviewsSwiper = new Swiper('.otzyvy-slider', {
     }
 });
 
-
-
+// FAQ
 
 document.addEventListener('DOMContentLoaded', () => {
     const faqItems = document.querySelectorAll('.faq__item');
@@ -159,4 +157,34 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     });
+});
+
+// сборка номера
+
+const phoneInput = document.querySelector('input[name="phone"]');
+
+phoneInput.addEventListener('input', (e) => {
+    let value = e.target.value.replace(/\D/g, '');
+
+    if (value === '') {
+        e.target.value = '';
+        return;
+    }
+
+    if (value[0] === '8') {
+        value = '7' + value.slice(1);
+    } else if (value[0] !== '7') {
+        value = '7' + value;
+    }
+
+    value = value.slice(0, 11);
+
+    let result = '+7';
+
+    if (value.length > 1) result += ' (' + value.slice(1, 4);
+    if (value.length >= 5) result += ') ' + value.slice(4, 7);
+    if (value.length >= 8) result += '-' + value.slice(7, 9);
+    if (value.length >= 10) result += '-' + value.slice(9, 11);
+
+    e.target.value = result;
 });
