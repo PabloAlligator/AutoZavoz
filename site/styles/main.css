@@ -3250,8 +3250,8 @@ body.no-scroll {
   gap: 12px;
 }
 .footer__socials a {
-  width: 38px;
-  height: 38px;
+  width: 58px;
+  height: 58px;
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -3266,8 +3266,7 @@ body.no-scroll {
   transform: translateY(-2px);
 }
 .footer__socials a img {
-  width: 18px;
-  height: 18px;
+  width: 100%;
   object-fit: contain;
 }
 .footer__nav, .footer__contacts {
@@ -3334,7 +3333,7 @@ body.no-scroll {
     gap: 40px;
   }
   .footer__logo {
-    font-size: 32px;
+    font-size: 52px;
   }
   .footer__text {
     font-size: 15px;
@@ -3440,8 +3439,8 @@ body.no-scroll {
     gap: 12px;
   }
   .footer__socials a {
-    width: 36px;
-    height: 36px;
+    width: 56px;
+    height: 56px;
   }
   .footer__socials a img {
     width: 100%;
@@ -3504,8 +3503,8 @@ body.no-scroll {
     line-height: 1.4;
   }
   .footer__socials a {
-    width: 34px;
-    height: 34px;
+    width: 54px;
+    height: 54px;
   }
   .footer__socials a img {
     width: 16px;
@@ -3549,12 +3548,12 @@ body.no-scroll {
     gap: 8px;
   }
   .footer__socials a {
-    width: 32px;
-    height: 32px;
+    width: 42px;
+    height: 42px;
   }
   .footer__socials a img {
-    width: 15px;
-    height: 15px;
+    width: 52px;
+    height: 42px;
   }
   .footer__nav h3, .footer__contacts h3 {
     font-size: 15px;
