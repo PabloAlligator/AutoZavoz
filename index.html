@@ -15,7 +15,7 @@
     <header class="header">
         <div class="header__logo">
             <a href="#home">
-                <img src="site/img/logo.PNG" alt="Logo">
+                <img src="site/img/Logo (2).png" alt="Logo">
             </a>
         </div>
 
@@ -257,6 +257,39 @@
         </div>
     </section>
 
+    <!-- форма обратной связи -->
+
+    <section class="bottom" id="form">
+        <div class="bottom-container">
+            <div class="bottom__title">
+                <h2>
+                    ГОТОВЫ К СВОЕМУ <span>ИДЕАЛЬНОМУ АВТО?</span>
+                </h2>
+
+                <p>
+                    Оставьте заявку, и мы бесплатно рассчитаем стоимость автомобиля вашей мечты с доставкой до вашего
+                    города.
+                </p>
+            </div>
+
+            <div class="bottom__form">
+                <form class="cta-form" id="ctaForm">
+                    <div class="cta-form__group">
+                        <input type="tel" name="phone" placeholder="Ваш номер телефона" required class="cta-form__input"
+                            inputmode="tel" autocomplete="tel" />
+                        <button type="submit" class="cta-form__btn">
+                            Рассчитать стоимость
+                        </button>
+                    </div>
+
+                    <p class="cta-form__policy">
+                        Нажимая кнопку, вы соглашаетесь с политикой конфиденциальности
+                    </p>
+                </form>
+            </div>
+        </div>
+    </section>
+
     <!-- section cars -->
 
     <section class="cars" id="catalog">
@@ -273,8 +306,8 @@
                         таможенными пошлинами.
                     </p>
 
-                    <a href="#">
-                        Все авто в Telegram
+                    <a href="https://vk.ru/autozavoz19" target="_blank">
+                        Все авто в VK
                     </a>
                 </div>
             </div>
@@ -1013,36 +1046,44 @@
         </div>
     </section>
 
-    <!-- форма обратной связи -->
+    <section class="contact-order" id="form">
+        <div class="contact-order__container">
 
-    <section class="bottom" id="form">
-        <div class="bottom-container">
-            <div class="bottom__title">
-                <h2>
-                    ГОТОВЫ К СВОЕМУ <span>ИДЕАЛЬНОМУ АВТО?</span>
-                </h2>
+            <!-- ЛЕВАЯ ЧАСТЬ -->
+            <div class="contact-order__map-block">
+                <div class="contact-order__map-header">
+                    <h2>ГДЕ МЫ <span>НАХОДИМСЯ</span></h2>
+                    <p>г. Абакан, ул. Аскизская, 198 Б</p>
+                </div>
 
-                <p>
-                    Оставьте заявку, и мы бесплатно рассчитаем стоимость автомобиля вашей мечты с доставкой до вашего
-                    города.
-                </p>
+                <div class="contact-order__map-wrapper">
+                    <iframe
+                        src="https://yandex.ru/map-widget/v1/?um=constructor%3A18b2722ed27a7e7345a05eeac43abfdc62c44ad782cdb302ae8fe2fe1f65d4da&amp;source=constructor"
+                        width="500" height="400" frameborder="0"></iframe>
+                </div>
             </div>
 
-            <div class="bottom__form">
-                <form class="cta-form" id="ctaForm">
-                    <div class="cta-form__group">
-                        <input type="tel" name="phone" placeholder="Ваш номер телефона" required class="cta-form__input"
-                            inputmode="tel" autocomplete="tel" />
-                        <button type="submit" class="cta-form__btn">
-                            Рассчитать стоимость
-                        </button>
-                    </div>
+            <!-- ПРАВАЯ ЧАСТЬ -->
+            <div class="contact-order__form-block">
+                <h2>ОСТАВЬТЕ <span>ЗАЯВКУ</span></h2>
 
-                    <p class="cta-form__policy">
-                        Нажимая кнопку, вы соглашаетесь с политикой конфиденциальности
+                <form class="contact-form" id="contactForm">
+                    <input type="tel" name="phone" placeholder="Телефон" required class="contact-form__input" />
+                    <input type="email" name="email" placeholder="Email" required class="contact-form__input" />
+
+                    <textarea name="comment" placeholder="Расскажите о своих пожеланиях и уточните ваш бюджет"
+                        class="contact-form__textarea"></textarea>
+
+                    <button type="submit" class="contact-form__btn">
+                        ОТПРАВИТЬ ЗАЯВКУ
+                    </button>
+
+                    <p class="contact-form__policy">
+                        Нажимая кнопку, вы соглашаетесь с политикой
                     </p>
                 </form>
             </div>
+
         </div>
     </section>
 
@@ -1061,15 +1102,18 @@
                 </p>
 
                 <div class="footer__socials">
-                    <a href="#" aria-label="Instagram">
-                        <img src="site/img/vk.png" alt="">
+                    <a href="#" target="_blank" aria-label="MAX">
+                        <img src="site/img/MAX.svg" alt="max ikon">
                     </a>
-                    <a href="#" aria-label="Telegram">
-                        <img src="site/img/insta.png" alt="">
+                    <a href="https://vk.ru/autozavoz19" target="_blank" aria-label="vk">
+                        <img src="site/img/vk.png" alt="vk ikon">
                     </a>
-                    <a href="#" aria-label="WhatsApp">
-                        <img src="site/img/tg.png" alt="">
+                    <a href="https://t.me/AutoZavoz" target="_blank" aria-label="tg">
+                        <img src="site/img/tg.png" alt="tg ikon">
                     </a>
+                    <!-- <a href="#" aria-label="Telegram">
+                        <img src="site/img/insta.png" alt="Telegram ikon">
+                    </a> -->
                 </div>
             </div>
 
@@ -1083,6 +1127,7 @@
                     <li><a href="#otzyv">Отзывы</a></li>
                     <li><a href="#faq">FAQ</a></li>
                     <li><a href="#form">Получить расчёт</a></li>
+                    <li><a href="#form">Разработка и дизайн сайта</a></li>
                 </ul>
             </div>
 
@@ -1091,17 +1136,21 @@
 
                 <div class="footer__contact-item">
                     <span>ТЕЛЕФОН</span>
-                    <a href="tel:+79000000000">+7 (900) 000-00-00</a>
+                    <a href="tel:+79339943070">+7 (933) 994-30-70</a>
+                </div>
+                <div class="footer__contact-item">
+                    <span>ТЕЛЕФОН</span>
+                    <a href="tel:+79617408040">+7 (961) 740-80-40</a>
                 </div>
 
                 <div class="footer__contact-item">
                     <span>EMAIL</span>
-                    <a href="mailto:info@autozavoz.ru">info@autozavoz.ru</a>
+                    <a href="mailto:durmanenkoaa0203@yandex.ru">durmanenkoaa0203@yandex.ru</a>
                 </div>
 
                 <div class="footer__contact-item">
                     <span>АДРЕС</span>
-                    <p>г. Абакан, ул. Примерная, 1А</p>
+                    <p>г. Абакан, ул. Аскизская, 198 Б</p>
                 </div>
             </div>
         </div>
