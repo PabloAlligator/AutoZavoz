@@ -104,39 +104,79 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-// модалка секции cars
+// модалка карточки карс
 const cards = document.querySelectorAll('.cars-card');
-const modals = document.querySelectorAll('.cars-card__modal');
+const modal = document.getElementById('carsModal');
 
-// открыть
-cards.forEach(card => {
-    card.addEventListener('click', () => {
-        const id = card.dataset.id;
+if (cards.length && modal) {
+    const modalOverlay = modal.querySelector('.cars-card__modal-overlay');
+    const modalClose = modal.querySelector('.cars-card__modal-close');
 
-        const modal = document.querySelector(`.cars-card__modal[data-id="${id}"]`);
-        if (!modal) return;
+    const modalPhoto = document.getElementById('carsModalPhoto');
+    const modalBadge = document.getElementById('carsModalBadge');
+    const modalTitle = document.getElementById('carsModalTitle');
+    const modalPrice = document.getElementById('carsModalPrice');
+    const modalGrade = document.getElementById('carsModalGrade');
+    const modalYear = document.getElementById('carsModalYear');
+    const modalEngine = document.getElementById('carsModalEngine');
+    const modalMileage = document.getElementById('carsModalMileage');
+    const modalDrive = document.getElementById('carsModalDrive');
+    const modalGearbox = document.getElementById('carsModalGearbox');
+    const modalAuction = document.getElementById('carsModalAuction');
+
+    function openModal(card) {
+        const {
+            title,
+            price,
+            badge,
+            grade,
+            year,
+            engine,
+            mileage,
+            drive,
+            gearbox,
+            auction,
+            image
+        } = card.dataset;
+
+        modalTitle.textContent = title || 'Автомобиль';
+        modalPrice.textContent = price || 'Цена уточняется';
+        modalBadge.textContent = badge || 'Под заказ';
+        modalGrade.textContent = grade || '—';
+        modalYear.textContent = year || '—';
+        modalEngine.textContent = engine || '—';
+        modalMileage.textContent = mileage || '—';
+        modalDrive.textContent = drive || '—';
+        modalGearbox.textContent = gearbox || '—';
+
+        modalAuction.setAttribute('href', auction || '#');
+
+        if (modalPhoto) {
+            modalPhoto.src = image || '../img/car.png';
+            modalPhoto.alt = title || 'Автомобиль';
+        }
 
         modal.classList.add('active');
         document.body.style.overflow = 'hidden';
-    });
-});
-
-// закрытие
-modals.forEach(modal => {
-    const closeBtn = modal.querySelector('.cars-card__modal-close');
-    const overlay = modal.querySelector('.cars-card__modal-overlay');
+    }
 
     function closeModal() {
         modal.classList.remove('active');
         document.body.style.overflow = '';
     }
 
-    if (closeBtn) {
-        closeBtn.addEventListener('click', closeModal);
+    cards.forEach((card) => {
+        card.addEventListener('click', () => {
+            openModal(card);
+        });
+    });
+
+    if (modalClose) {
+        modalClose.addEventListener('click', closeModal);
     }
 
-    if (overlay) {
-        overlay.addEventListener('click', closeModal);
+    if (modalOverlay) {
+        modalOverlay.addEventListener('click', closeModal);
     }
 
     document.addEventListener('keydown', (e) => {
@@ -144,7 +184,7 @@ modals.forEach(modal => {
             closeModal();
         }
     });
-});
+}
 
 // SWIPER
 

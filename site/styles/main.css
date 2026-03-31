@@ -379,7 +379,8 @@ body.no-scroll {
   inset: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  -o-object-fit: cover;
+     object-fit: cover;
   z-index: 0;
   filter: brightness(1) saturate(1.05);
 }
@@ -622,7 +623,8 @@ body.no-scroll {
     padding: 120px 16px 60px;
   }
   .hero__video {
-    object-position: center;
+    -o-object-position: center;
+       object-position: center;
   }
   .hero__badge {
     min-height: 34px;
@@ -730,7 +732,8 @@ body.no-scroll {
   display: block;
   width: 40px;
   height: auto;
-  object-fit: cover;
+  -o-object-fit: cover;
+     object-fit: cover;
 }
 .section-two__item h3 {
   color: #f4f1f5;
@@ -1320,6 +1323,7 @@ body.no-scroll {
   color: #f4f1f5;
   position: relative;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
 }
 .cars .cars-card:hover {
   transform: translateY(-4px);
@@ -1332,31 +1336,15 @@ body.no-scroll {
 .cars .cars-card__image {
   position: relative;
   height: 230px;
-  background: linear-gradient(180deg, rgba(239, 222, 215, 0.9) 0%, rgba(75, 71, 88, 0.2) 55%, rgba(16, 18, 27, 0.95) 100%), url("img/car.png") center center/cover no-repeat;
+  overflow: hidden;
+  background: #11131b;
 }
-.cars .cars-card:nth-child(1) .cars-card__image {
-  background: linear-gradient(180deg, rgba(239, 222, 215, 0.9) 0%, rgba(75, 71, 88, 0.2) 55%, rgba(16, 18, 27, 0.95) 100%), url("../img/mersCLA1802015.jpg") center center/cover no-repeat;
-}
-.cars .cars-card:nth-child(2) .cars-card__image {
-  background: linear-gradient(180deg, rgba(239, 222, 215, 0.9) 0%, rgba(75, 71, 88, 0.2) 55%, rgba(16, 18, 27, 0.95) 100%), url("../img/landCruiser300.jpg") center center/cover no-repeat;
-}
-.cars .cars-card:nth-child(3) .cars-card__image {
-  background: linear-gradient(180deg, rgba(239, 222, 215, 0.9) 0%, rgba(75, 71, 88, 0.2) 55%, rgba(16, 18, 27, 0.95) 100%), url("../img/crown2019.jpg") center center/cover no-repeat;
-}
-.cars .cars-card:nth-child(4) .cars-card__image {
-  background: linear-gradient(180deg, rgba(239, 222, 215, 0.9) 0%, rgba(75, 71, 88, 0.2) 55%, rgba(16, 18, 27, 0.95) 100%), url("../img/kiak5.jpg") center center/cover no-repeat;
-}
-.cars .cars-card:nth-child(5) .cars-card__image {
-  background: linear-gradient(180deg, rgba(239, 222, 215, 0.9) 0%, rgba(75, 71, 88, 0.2) 55%, rgba(16, 18, 27, 0.95) 100%), url("../img/hyundaiPalisade.jpg") center center/cover no-repeat;
-}
-.cars .cars-card:nth-child(6) .cars-card__image {
-  background: linear-gradient(180deg, rgba(239, 222, 215, 0.9) 0%, rgba(75, 71, 88, 0.2) 55%, rgba(16, 18, 27, 0.95) 100%), url("../img/geelYMonjaro2023.jpg") center center/cover no-repeat;
-}
-.cars .cars-card:nth-child(7) .cars-card__image {
-  background: linear-gradient(180deg, rgba(239, 222, 215, 0.9) 0%, rgba(75, 71, 88, 0.2) 55%, rgba(16, 18, 27, 0.95) 100%), url("../img/camry.jpg") center center/cover no-repeat;
-}
-.cars .cars-card:nth-child(8) .cars-card__image {
-  background: linear-gradient(180deg, rgba(239, 222, 215, 0.9) 0%, rgba(75, 71, 88, 0.2) 55%, rgba(16, 18, 27, 0.95) 100%), url("../img/bmw5g30.jpg") center center/cover no-repeat;
+.cars .cars-card__image img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  -o-object-fit: cover;
+     object-fit: cover;
 }
 .cars .cars-card__image::after {
   content: "";
@@ -1376,7 +1364,6 @@ body.no-scroll {
   padding: 8px 14px;
   min-height: 34px;
   border-radius: 12px;
-  text-transform: uppercase;
   will-change: transform;
   color: #f4f1f5;
   background: rgba(255, 255, 255, 0.04);
@@ -1506,7 +1493,7 @@ body.no-scroll {
   font-size: 28px;
   color: #f4f1f5;
   cursor: pointer;
-  z-index: 2;
+  z-index: 3;
 }
 .cars .cars-card__modal-close:hover {
   color: #ff5a00;
@@ -1516,8 +1503,24 @@ body.no-scroll {
   max-height: 90vh;
 }
 .cars .cars-card__modal-image {
+  position: relative;
   height: 260px;
-  background: linear-gradient(180deg, rgba(239, 222, 215, 0.9) 0%, rgba(75, 71, 88, 0.2) 55%, rgba(16, 18, 27, 0.95) 100%), url("../img/camry.jpg") center/cover no-repeat;
+  overflow: hidden;
+  background: #11131b;
+}
+.cars .cars-card__modal-image img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+.cars .cars-card__modal-image::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0) 35%, rgba(0, 0, 0, 0.18) 58%, rgba(12, 13, 20, 0.78) 100%);
+  pointer-events: none;
 }
 .cars .cars-card__modal-content {
   padding: 24px;
@@ -1567,9 +1570,11 @@ body.no-scroll {
   justify-content: space-between;
   font-size: 14px;
   color: rgba(255, 255, 255, 0.82);
+  gap: 16px;
 }
 .cars .cars-card__modal-info div strong {
   color: #f4f1f5;
+  text-align: right;
 }
 .cars .cars-card__modal-link {
   margin-top: 10px;
@@ -1642,6 +1647,9 @@ body.no-scroll {
     width: 100%;
     max-width: 100%;
   }
+  .cars .cars-card__modal-body {
+    max-width: 640px;
+  }
 }
 @media (max-width: 992px) {
   .cars {
@@ -1691,6 +1699,22 @@ body.no-scroll {
   }
   .cars .cars-card__price {
     font-size: 18px;
+  }
+  .cars .cars-card__modal-body {
+    width: calc(100% - 32px);
+    max-width: 680px;
+  }
+  .cars .cars-card__modal-image {
+    height: 240px;
+  }
+  .cars .cars-card__modal-content {
+    padding: 22px;
+  }
+  .cars .cars-card__modal-title {
+    font-size: 22px;
+  }
+  .cars .cars-card__modal-price {
+    font-size: 19px;
   }
 }
 @media (max-width: 768px) {
@@ -1753,6 +1777,51 @@ body.no-scroll {
   }
   .cars .cars-card__price {
     font-size: 18px;
+  }
+  .cars .cars-card__modal-body {
+    width: calc(100% - 24px);
+    max-height: 88vh;
+    border-radius: 14px;
+  }
+  .cars .cars-card__modal-scroll {
+    max-height: 88vh;
+  }
+  .cars .cars-card__modal-image {
+    height: 220px;
+  }
+  .cars .cars-card__modal-content {
+    padding: 20px 18px;
+    gap: 14px;
+  }
+  .cars .cars-card__modal-title {
+    font-size: 20px;
+    line-height: 1.2;
+  }
+  .cars .cars-card__modal-price {
+    font-size: 18px;
+  }
+  .cars .cars-card__modal-grade {
+    padding: 10px 12px;
+  }
+  .cars .cars-card__modal-grade span {
+    font-size: 13px;
+  }
+  .cars .cars-card__modal-grade strong {
+    font-size: 16px;
+  }
+  .cars .cars-card__modal-info {
+    gap: 8px;
+  }
+  .cars .cars-card__modal-info div {
+    font-size: 13px;
+  }
+  .cars .cars-card__modal-btn {
+    height: 48px;
+  }
+  .cars .cars-card__modal-close {
+    top: 12px;
+    right: 12px;
+    font-size: 26px;
   }
 }
 @media (max-width: 576px) {
@@ -1843,6 +1912,45 @@ body.no-scroll {
     font-size: 8px;
     border-radius: 8px;
   }
+  .cars .cars-card__modal-body {
+    width: calc(100% - 16px);
+    border-radius: 12px;
+  }
+  .cars .cars-card__modal-image {
+    height: 190px;
+  }
+  .cars .cars-card__modal-content {
+    padding: 16px 14px 18px;
+    gap: 12px;
+  }
+  .cars .cars-card__modal-badge {
+    font-size: 10px;
+    padding: 6px 10px;
+    border-radius: 8px;
+  }
+  .cars .cars-card__modal-title {
+    font-size: 18px;
+  }
+  .cars .cars-card__modal-price {
+    font-size: 17px;
+  }
+  .cars .cars-card__modal-grade {
+    flex-direction: row;
+    gap: 12px;
+    padding: 10px;
+  }
+  .cars .cars-card__modal-info div {
+    font-size: 12px;
+    gap: 12px;
+  }
+  .cars .cars-card__modal-link {
+    font-size: 13px;
+  }
+  .cars .cars-card__modal-btn {
+    height: 46px;
+    font-size: 14px;
+    border-radius: 10px;
+  }
 }
 @media (max-width: 526px) {
   .cars__inner {
@@ -1886,6 +1994,27 @@ body.no-scroll {
     width: 26px;
     height: 26px;
     font-size: 20px;
+  }
+  .cars .cars-card__modal-image {
+    height: 170px;
+  }
+  .cars .cars-card__modal-title {
+    font-size: 17px;
+  }
+  .cars .cars-card__modal-price {
+    font-size: 16px;
+  }
+  .cars .cars-card__modal-grade span {
+    font-size: 12px;
+  }
+  .cars .cars-card__modal-grade strong {
+    font-size: 15px;
+  }
+  .cars .cars-card__modal-info div {
+    font-size: 11px;
+  }
+  .cars .cars-card__modal-close {
+    font-size: 24px;
   }
 }
 @media (max-width: 420px) {
@@ -1938,6 +2067,40 @@ body.no-scroll {
     font-size: 8px;
     padding: 6px 8px;
     min-height: 28px;
+  }
+  .cars .cars-card__modal-body {
+    width: calc(100% - 12px);
+    max-height: 86vh;
+  }
+  .cars .cars-card__modal-scroll {
+    max-height: 86vh;
+  }
+  .cars .cars-card__modal-image {
+    height: 200px;
+  }
+  .cars .cars-card__modal-content {
+    padding: 16px 12px 18px;
+  }
+  .cars .cars-card__modal-title {
+    font-size: 18px;
+  }
+  .cars .cars-card__modal-price {
+    font-size: 17px;
+  }
+  .cars .cars-card__modal-grade {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .cars .cars-card__modal-info div {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+  .cars .cars-card__modal-info div strong {
+    text-align: left;
+  }
+  .cars .cars-card__modal-btn {
+    width: 100%;
   }
 }
 .country {
@@ -2370,7 +2533,8 @@ body.no-scroll {
 .otzyvy-card__image img {
   width: 100%;
   height: 100%;
-  object-fit: contain;
+  -o-object-fit: contain;
+     object-fit: contain;
   display: block;
   transition: transform 0.4s ease;
 }
@@ -3112,6 +3276,9 @@ body.no-scroll {
   font-size: 16px;
   border-radius: 12px 0 0 12px;
 }
+.bottom .cta-form__input::-moz-placeholder {
+  color: rgba(255, 255, 255, 0.4);
+}
 .bottom .cta-form__input::placeholder {
   color: rgba(255, 255, 255, 0.4);
 }
@@ -3450,6 +3617,9 @@ body.no-scroll {
   outline: none;
   transition: border-color 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
 }
+.contact-order .contact-form__input::-moz-placeholder, .contact-order .contact-form__textarea::-moz-placeholder {
+  color: rgba(255, 255, 255, 0.42);
+}
 .contact-order .contact-form__input::placeholder, .contact-order .contact-form__textarea::placeholder {
   color: rgba(255, 255, 255, 0.42);
 }
@@ -3775,7 +3945,8 @@ body.no-scroll {
 .footer__socials a img {
   width: 100%;
   max-width: 48px;
-  object-fit: contain;
+  -o-object-fit: contain;
+     object-fit: contain;
 }
 .footer__nav, .footer__contacts {
   display: flex;
@@ -3953,7 +4124,8 @@ body.no-scroll {
   .footer__socials a img {
     width: 100%;
     height: 100%;
-    object-fit: contain;
+    -o-object-fit: contain;
+       object-fit: contain;
   }
   .footer__nav {
     grid-area: nav;

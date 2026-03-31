@@ -1178,7 +1178,6 @@ body.no-scroll {
 }
 
 // section cars
-
 .cars {
     width: 100%;
     display: flex;
@@ -1200,7 +1199,6 @@ body.no-scroll {
         flex-direction: column;
         align-items: start;
         justify-content: space-between;
-        // gap: 48px;
 
         h2 {
             font-size: 48px;
@@ -1284,6 +1282,7 @@ body.no-scroll {
         color: $white-main;
         position: relative;
         transition: transform 0.3s ease, box-shadow 0.3s ease;
+        cursor: pointer;
 
         &:hover {
             transform: translateY(-4px);
@@ -1300,112 +1299,29 @@ body.no-scroll {
         &__image {
             position: relative;
             height: 230px;
-            background:
-                linear-gradient(180deg,
-                    rgba(239, 222, 215, 0.9) 0%,
-                    rgba(75, 71, 88, 0.2) 55%,
-                    rgba(16, 18, 27, 0.95) 100%),
-                url("img/car.png") center center / cover no-repeat;
-        }
+            overflow: hidden;
+            background: #11131b;
 
-        &:nth-child(1) {
-            .cars-card__image {
-                background:
-                    linear-gradient(180deg,
-                        rgba(239, 222, 215, 0.9) 0%,
-                        rgba(75, 71, 88, 0.2) 55%,
-                        rgba(16, 18, 27, 0.95) 100%),
-                    url("../img/mersCLA1802015.jpg") center center / cover no-repeat;
+            img {
+                width: 100%;
+                height: 100%;
+                display: block;
+                object-fit: cover;
             }
-        }
 
-        &:nth-child(2) {
-            .cars-card__image {
+            &::after {
+                content: "";
+                position: absolute;
+                inset: 0;
                 background:
-                    linear-gradient(180deg,
-                        rgba(239, 222, 215, 0.9) 0%,
-                        rgba(75, 71, 88, 0.2) 55%,
-                        rgba(16, 18, 27, 0.95) 100%),
-                    url("../img/landCruiser300.jpg") center center / cover no-repeat;
+                    linear-gradient(
+                        180deg,
+                        rgba(0, 0, 0, 0) 35%,
+                        rgba(0, 0, 0, 0.18) 58%,
+                        rgba(12, 13, 20, 0.78) 100%
+                    );
+                pointer-events: none;
             }
-        }
-
-        &:nth-child(3) {
-            .cars-card__image {
-                background:
-                    linear-gradient(180deg,
-                        rgba(239, 222, 215, 0.9) 0%,
-                        rgba(75, 71, 88, 0.2) 55%,
-                        rgba(16, 18, 27, 0.95) 100%),
-                    url("../img/crown2019.jpg") center center / cover no-repeat;
-            }
-        }
-
-        &:nth-child(4) {
-            .cars-card__image {
-                background:
-                    linear-gradient(180deg,
-                        rgba(239, 222, 215, 0.9) 0%,
-                        rgba(75, 71, 88, 0.2) 55%,
-                        rgba(16, 18, 27, 0.95) 100%),
-                    url("../img/kiak5.jpg") center center / cover no-repeat;
-            }
-        }
-
-        &:nth-child(5) {
-            .cars-card__image {
-                background:
-                    linear-gradient(180deg,
-                        rgba(239, 222, 215, 0.9) 0%,
-                        rgba(75, 71, 88, 0.2) 55%,
-                        rgba(16, 18, 27, 0.95) 100%),
-                    url("../img/hyundaiPalisade.jpg") center center / cover no-repeat;
-            }
-        }
-
-        &:nth-child(6) {
-            .cars-card__image {
-                background:
-                    linear-gradient(180deg,
-                        rgba(239, 222, 215, 0.9) 0%,
-                        rgba(75, 71, 88, 0.2) 55%,
-                        rgba(16, 18, 27, 0.95) 100%),
-                    url("../img/geelYMonjaro2023.jpg") center center / cover no-repeat;
-            }
-        }
-
-        &:nth-child(7) {
-            .cars-card__image {
-                background:
-                    linear-gradient(180deg,
-                        rgba(239, 222, 215, 0.9) 0%,
-                        rgba(75, 71, 88, 0.2) 55%,
-                        rgba(16, 18, 27, 0.95) 100%),
-                    url("../img/camry.jpg") center center / cover no-repeat;
-            }
-        }
-
-        &:nth-child(8) {
-            .cars-card__image {
-                background:
-                    linear-gradient(180deg,
-                        rgba(239, 222, 215, 0.9) 0%,
-                        rgba(75, 71, 88, 0.2) 55%,
-                        rgba(16, 18, 27, 0.95) 100%),
-                    url("../img/bmw5g30.jpg") center center / cover no-repeat;
-            }
-        }
-
-        &__image::after {
-            content: "";
-            position: absolute;
-            inset: 0;
-            background:
-                linear-gradient(180deg,
-                    rgba(0, 0, 0, 0) 35%,
-                    rgba(0, 0, 0, 0.18) 58%,
-                    rgba(12, 13, 20, 0.78) 100%);
-            pointer-events: none;
         }
 
         &__badge {
@@ -1419,7 +1335,6 @@ body.no-scroll {
             padding: 8px 14px;
             min-height: 34px;
             border-radius: 12px;
-            text-transform: uppercase;
             will-change: transform;
             color: $white-main;
             background: rgba(255, 255, 255, 0.04);
@@ -1566,7 +1481,7 @@ body.no-scroll {
             font-size: 28px;
             color: $white-main;
             cursor: pointer;
-            z-index: 2;
+            z-index: 3;
 
             &:hover {
                 color: $orange-dark;
@@ -1579,19 +1494,32 @@ body.no-scroll {
         }
 
         &-image {
+            position: relative;
             height: 260px;
-            background:
-                linear-gradient(180deg,
-                    rgba(239, 222, 215, 0.9) 0%,
-                    rgba(75, 71, 88, 0.2) 55%,
-                    rgba(16, 18, 27, 0.95) 100%),
-                url("../img/camry.jpg") center/cover no-repeat;
+            overflow: hidden;
+            background: #11131b;
+
+            img {
+                width: 100%;
+                height: 100%;
+                display: block;
+                object-fit: cover;
+            }
+
+            &::after {
+                content: "";
+                position: absolute;
+                inset: 0;
+                background:
+                    linear-gradient(
+                        180deg,
+                        rgba(0, 0, 0, 0) 35%,
+                        rgba(0, 0, 0, 0.18) 58%,
+                        rgba(12, 13, 20, 0.78) 100%
+                    );
+                pointer-events: none;
+            }
         }
-
-        // &:nth-child(4) {
-        //     &-image {}
-
-        // }
 
         &-content {
             padding: 24px;
@@ -1647,9 +1575,11 @@ body.no-scroll {
                 justify-content: space-between;
                 font-size: 14px;
                 color: $white-soft;
+                gap: 16px;
 
                 strong {
                     color: $white-main;
+                    text-align: right;
                 }
             }
         }
@@ -1683,14 +1613,7 @@ body.no-scroll {
                 transform: translateY(0);
             }
         }
-
     }
-
-    // &:nth-child(1) {
-    //     &-image {
-
-    //     }
-    // }
 }
 
 @media (max-width: 1440px) {
@@ -1745,6 +1668,12 @@ body.no-scroll {
         .cars-card {
             width: 100%;
             max-width: 100%;
+        }
+
+        .cars-card__modal {
+            &-body {
+                max-width: 640px;
+            }
         }
     }
 }
@@ -1807,6 +1736,29 @@ body.no-scroll {
 
             &__price {
                 font-size: 18px;
+            }
+        }
+
+        .cars-card__modal {
+            &-body {
+                width: calc(100% - 32px);
+                max-width: 680px;
+            }
+
+            &-image {
+                height: 240px;
+            }
+
+            &-content {
+                padding: 22px;
+            }
+
+            &-title {
+                font-size: 22px;
+            }
+
+            &-price {
+                font-size: 19px;
             }
         }
     }
@@ -1884,6 +1836,66 @@ body.no-scroll {
 
             &__price {
                 font-size: 18px;
+            }
+        }
+
+        .cars-card__modal {
+            &-body {
+                width: calc(100% - 24px);
+                max-height: 88vh;
+                border-radius: 14px;
+            }
+
+            &-scroll {
+                max-height: 88vh;
+            }
+
+            &-image {
+                height: 220px;
+            }
+
+            &-content {
+                padding: 20px 18px;
+                gap: 14px;
+            }
+
+            &-title {
+                font-size: 20px;
+                line-height: 1.2;
+            }
+
+            &-price {
+                font-size: 18px;
+            }
+
+            &-grade {
+                padding: 10px 12px;
+
+                span {
+                    font-size: 13px;
+                }
+
+                strong {
+                    font-size: 16px;
+                }
+            }
+
+            &-info {
+                gap: 8px;
+
+                div {
+                    font-size: 13px;
+                }
+            }
+
+            &-btn {
+                height: 48px;
+            }
+
+            &-close {
+                top: 12px;
+                right: 12px;
+                font-size: 26px;
             }
         }
     }
@@ -1995,6 +2007,59 @@ body.no-scroll {
                 border-radius: 8px;
             }
         }
+
+        .cars-card__modal {
+            &-body {
+                width: calc(100% - 16px);
+                border-radius: 12px;
+            }
+
+            &-image {
+                height: 190px;
+            }
+
+            &-content {
+                padding: 16px 14px 18px;
+                gap: 12px;
+            }
+
+            &-badge {
+                font-size: 10px;
+                padding: 6px 10px;
+                border-radius: 8px;
+            }
+
+            &-title {
+                font-size: 18px;
+            }
+
+            &-price {
+                font-size: 17px;
+            }
+
+            &-grade {
+                flex-direction: row;
+                gap: 12px;
+                padding: 10px;
+            }
+
+            &-info {
+                div {
+                    font-size: 12px;
+                    gap: 12px;
+                }
+            }
+
+            &-link {
+                font-size: 13px;
+            }
+
+            &-btn {
+                height: 46px;
+                font-size: 14px;
+                border-radius: 10px;
+            }
+        }
     }
 }
 
@@ -2049,6 +2114,40 @@ body.no-scroll {
                 width: 26px;
                 height: 26px;
                 font-size: 20px;
+            }
+        }
+
+        .cars-card__modal {
+            &-image {
+                height: 170px;
+            }
+
+            &-title {
+                font-size: 17px;
+            }
+
+            &-price {
+                font-size: 16px;
+            }
+
+            &-grade {
+                span {
+                    font-size: 12px;
+                }
+
+                strong {
+                    font-size: 15px;
+                }
+            }
+
+            &-info {
+                div {
+                    font-size: 11px;
+                }
+            }
+
+            &-close {
+                font-size: 24px;
             }
         }
     }
@@ -2119,9 +2218,56 @@ body.no-scroll {
                 min-height: 28px;
             }
         }
+
+        .cars-card__modal {
+            &-body {
+                width: calc(100% - 12px);
+                max-height: 86vh;
+            }
+
+            &-scroll {
+                max-height: 86vh;
+            }
+
+            &-image {
+                height: 200px;
+            }
+
+            &-content {
+                padding: 16px 12px 18px;
+            }
+
+            &-title {
+                font-size: 18px;
+            }
+
+            &-price {
+                font-size: 17px;
+            }
+
+            &-grade {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            &-info {
+                div {
+                    flex-direction: column;
+                    align-items: flex-start;
+                    gap: 4px;
+
+                    strong {
+                        text-align: left;
+                    }
+                }
+            }
+
+            &-btn {
+                width: 100%;
+            }
+        }
     }
 }
-
 // секция country
 
 .country {
