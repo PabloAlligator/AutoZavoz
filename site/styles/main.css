@@ -379,8 +379,7 @@ body.no-scroll {
   inset: 0;
   width: 100%;
   height: 100%;
-  -o-object-fit: cover;
-     object-fit: cover;
+  object-fit: cover;
   z-index: 0;
   filter: brightness(1) saturate(1.05);
 }
@@ -623,8 +622,7 @@ body.no-scroll {
     padding: 120px 16px 60px;
   }
   .hero__video {
-    -o-object-position: center;
-       object-position: center;
+    object-position: center;
   }
   .hero__badge {
     min-height: 34px;
@@ -732,8 +730,7 @@ body.no-scroll {
   display: block;
   width: 40px;
   height: auto;
-  -o-object-fit: cover;
-     object-fit: cover;
+  object-fit: cover;
 }
 .section-two__item h3 {
   color: #f4f1f5;
@@ -1520,7 +1517,7 @@ body.no-scroll {
 }
 .cars .cars-card__modal-image {
   height: 260px;
-  background: linear-gradient(180deg, rgba(239, 222, 215, 0.9) 0%, rgba(75, 71, 88, 0.2) 55%, rgba(16, 18, 27, 0.95) 100%), url("../img/mersCLA1802015.jpg") center/cover no-repeat;
+  background: linear-gradient(180deg, rgba(239, 222, 215, 0.9) 0%, rgba(75, 71, 88, 0.2) 55%, rgba(16, 18, 27, 0.95) 100%), url("../img/camry.jpg") center/cover no-repeat;
 }
 .cars .cars-card__modal-content {
   padding: 24px;
@@ -2373,8 +2370,7 @@ body.no-scroll {
 .otzyvy-card__image img {
   width: 100%;
   height: 100%;
-  -o-object-fit: contain;
-     object-fit: contain;
+  object-fit: contain;
   display: block;
   transition: transform 0.4s ease;
 }
@@ -3116,9 +3112,6 @@ body.no-scroll {
   font-size: 16px;
   border-radius: 12px 0 0 12px;
 }
-.bottom .cta-form__input::-moz-placeholder {
-  color: rgba(255, 255, 255, 0.4);
-}
 .bottom .cta-form__input::placeholder {
   color: rgba(255, 255, 255, 0.4);
 }
@@ -3457,9 +3450,6 @@ body.no-scroll {
   outline: none;
   transition: border-color 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
 }
-.contact-order .contact-form__input::-moz-placeholder, .contact-order .contact-form__textarea::-moz-placeholder {
-  color: rgba(255, 255, 255, 0.42);
-}
 .contact-order .contact-form__input::placeholder, .contact-order .contact-form__textarea::placeholder {
   color: rgba(255, 255, 255, 0.42);
 }
@@ -3785,8 +3775,7 @@ body.no-scroll {
 .footer__socials a img {
   width: 100%;
   max-width: 48px;
-  -o-object-fit: contain;
-     object-fit: contain;
+  object-fit: contain;
 }
 .footer__nav, .footer__contacts {
   display: flex;
@@ -3964,8 +3953,7 @@ body.no-scroll {
   .footer__socials a img {
     width: 100%;
     height: 100%;
-    -o-object-fit: contain;
-       object-fit: contain;
+    object-fit: contain;
   }
   .footer__nav {
     grid-area: nav;
