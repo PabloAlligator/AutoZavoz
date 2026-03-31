@@ -2087,7 +2087,6 @@ body.no-scroll {
     align-items: flex-start;
   }
   .cars .cars-card__modal-info div {
-    flex-direction: column;
     align-items: flex-start;
     gap: 4px;
   }

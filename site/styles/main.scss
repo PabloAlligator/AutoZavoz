@@ -2157,6 +2157,7 @@ body.no-scroll {
 
 @media (max-width: 420px) {
     .cars {
+       
         padding: 48px 12px;
 
         &__title {
@@ -2177,6 +2178,7 @@ body.no-scroll {
 
         &__inner {
             gap: 16px;
+            
         }
 
         .cars-card {
@@ -2254,8 +2256,9 @@ body.no-scroll {
 
             &-info {
                 div {
-                    flex-direction: column;
+                    // flex-direction: column;
                     align-items: flex-start;
+                
                     gap: 4px;
 
                     strong {
