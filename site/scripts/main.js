@@ -117,6 +117,7 @@ if (cards.length && modal) {
     const modalTitle = document.getElementById('carsModalTitle');
     const modalPrice = document.getElementById('carsModalPrice');
     const modalGrade = document.getElementById('carsModalGrade');
+    const modalComplectation = document.getElementById('carsModalComplectation');
     const modalYear = document.getElementById('carsModalYear');
     const modalEngine = document.getElementById('carsModalEngine');
     const modalMileage = document.getElementById('carsModalMileage');
@@ -130,6 +131,7 @@ if (cards.length && modal) {
             price,
             badge,
             grade,
+            complectation,
             year,
             engine,
             mileage,
@@ -143,6 +145,10 @@ if (cards.length && modal) {
         modalPrice.textContent = price || 'Цена уточняется';
         modalBadge.textContent = badge || 'Под заказ';
         modalGrade.textContent = grade || '—';
+        
+        if (modalComplectation) {
+            modalComplectation.textContent = complectation || '—';
+        }
         modalYear.textContent = year || '—';
         modalEngine.textContent = engine || '—';
         modalMileage.textContent = mileage || '—';
