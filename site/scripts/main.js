@@ -192,13 +192,14 @@ if (cards.length && modal) {
     });
 }
 
-// SWIPER
+// SWIPER + раскрытие текста в отзывах
 
 const reviewsSwiper = new Swiper('.otzyvy-slider', {
     slidesPerView: 3,
     spaceBetween: 24,
     loop: true,
     speed: 800,
+    autoHeight: false,
 
     navigation: {
         nextEl: '.otzyvy-button-next',
@@ -222,8 +223,75 @@ const reviewsSwiper = new Swiper('.otzyvy-slider', {
             slidesPerView: 3,
             spaceBetween: 24,
         }
+    },
+
+    on: {
+        init() {
+            initReviewToggles();
+        }
     }
 });
+
+function initReviewToggles() {
+    const reviewCards = document.querySelectorAll('.otzyvy-card');
+
+    reviewCards.forEach((card) => {
+        if (card.dataset.ready === 'true') return;
+        card.dataset.ready = 'true';
+
+        const text = card.querySelector('.otzyvy-card__text');
+        const toggle = card.querySelector('.otzyvy-card__toggle');
+
+        if (!text || !toggle) return;
+
+        const updateState = () => {
+            const wasOpen = card.classList.contains('is-open');
+
+            if (wasOpen) {
+                card.classList.remove('is-open');
+                toggle.textContent = 'Читать больше';
+                toggle.setAttribute('aria-expanded', 'false');
+            }
+
+            card.classList.remove('is-short');
+
+            const isOverflowing = text.scrollHeight > text.clientHeight + 2;
+
+            if (!isOverflowing) {
+                card.classList.add('is-short');
+            }
+
+            if (wasOpen && !card.classList.contains('is-short')) {
+                card.classList.add('is-open');
+                toggle.textContent = 'Свернуть';
+                toggle.setAttribute('aria-expanded', 'true');
+            }
+        };
+
+        requestAnimationFrame(() => {
+            updateState();
+            reviewsSwiper.update();
+        });
+
+        toggle.addEventListener('click', () => {
+            const isOpen = card.classList.toggle('is-open');
+
+            toggle.textContent = isOpen ? 'Свернуть' : 'Читать больше';
+            toggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+
+            setTimeout(() => {
+                reviewsSwiper.update();
+            }, 50);
+        });
+
+        window.addEventListener('resize', updateState);
+    });
+}
+
+reviewsSwiper.on('slideChangeTransitionEnd', () => {
+    reviewsSwiper.update();
+}); 
+
 
 // FAQ
 
