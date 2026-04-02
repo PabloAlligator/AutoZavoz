@@ -1571,6 +1571,22 @@ body.no-scroll {
   color: #f4f1f5;
   text-align: right;
 }
+.cars .cars-card__modal-complectation {
+  margin-top: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.cars .cars-card__modal-complectation span {
+  font-size: 12px;
+  color: rgba(244, 241, 245, 0.6);
+  letter-spacing: 0.5px;
+}
+.cars .cars-card__modal-complectation strong {
+  font-size: 16px;
+  font-weight: 600;
+  color: #f4f1f5;
+}
 .cars .cars-card__modal-link {
   margin-top: 10px;
   color: #ff5a00;
@@ -2477,6 +2493,7 @@ body.no-scroll {
   flex-direction: column;
   gap: 20px;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  overflow-y: hidden;
 }
 .otzyvy-card:hover {
   transform: translateY(-6px);

@@ -2749,6 +2749,7 @@ body.no-scroll {
             font-size: 22px;
             line-height: 1.4;
             color: $white-soft;
+           
         }
     }
 
@@ -2775,6 +2776,7 @@ body.no-scroll {
         flex-direction: column;
         gap: 20px;
         transition: transform 0.3s ease, box-shadow 0.3s ease;
+        overflow-y: hidden; // скрываем скролл, чтобы не было полосы при наведении
 
         &:hover {
             transform: translateY(-6px);
