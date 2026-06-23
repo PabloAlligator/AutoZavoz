@@ -36,7 +36,38 @@
         </header>
 
         <section class="admin-panel">
-          <p>Заявки подключим после автомобилей.</p>
+          <div class="admin-panel__head">
+            <div>
+              <h2>Список заявок</h2>
+              <p id="leadsCount">Загрузка...</p>
+            </div>
+          </div>
+
+          <div class="admin-table-wrap">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>Клиент</th>
+                  <th>Контакты</th>
+                  <th>Автомобиль</th>
+                  <th>Сообщение</th>
+                  <th>Статус</th>
+                  <th>Дата</th>
+                  <th></th>
+                </tr>
+              </thead>
+
+              <tbody id="leadsTableBody">
+                <tr>
+                  <td colspan="7">Загружаем заявки...</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <p class="admin-empty" id="leadsEmpty" hidden>
+            Заявок пока нет.
+          </p>
         </section>
       </main>
     </div>

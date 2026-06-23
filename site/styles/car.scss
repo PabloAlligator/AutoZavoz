@@ -526,3 +526,108 @@ body.car-page {
     }
   }
 }
+
+.car-lead-form {
+  display: grid;
+  gap: 14px;
+  margin-top: 22px;
+
+  label {
+    display: grid;
+    gap: 7px;
+
+    span {
+      color: rgba(244, 241, 245, 0.68);
+      font-size: 13px;
+      font-weight: 800;
+    }
+  }
+
+  input,
+  textarea,
+  select {
+    width: 100%;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 10px;
+    outline: none;
+    background: rgba(0, 0, 0, 0.32);
+    color: #f4f1f5;
+    transition:
+      border-color 0.2s ease,
+      box-shadow 0.2s ease;
+
+    &:focus {
+      border-color: rgba(255, 106, 0, 0.75);
+      box-shadow: 0 0 0 4px rgba(255, 106, 0, 0.12);
+    }
+
+    &::placeholder {
+      color: rgba(244, 241, 245, 0.42);
+    }
+  }
+
+  input,
+  select {
+    height: 46px;
+    padding: 0 13px;
+  }
+
+  textarea {
+    min-height: 96px;
+    padding: 13px;
+    resize: vertical;
+    line-height: 1.5;
+  }
+
+  select {
+    appearance: none;
+  }
+
+  &__agreement {
+    display: flex !important;
+    align-items: flex-start;
+    gap: 10px !important;
+    color: rgba(244, 241, 245, 0.6);
+    font-size: 12px;
+    line-height: 1.45;
+
+    input {
+      flex: 0 0 auto;
+      width: 18px;
+      height: 18px;
+      margin-top: 1px;
+      accent-color: #ff6a00;
+    }
+
+    span {
+      font-size: 12px !important;
+      font-weight: 500 !important;
+    }
+  }
+
+  &__message {
+    min-height: 18px;
+    margin: 0;
+    font-size: 13px;
+    line-height: 1.4;
+
+    &.is-success {
+      color: #7dffab;
+    }
+
+    &.is-error {
+      color: #ff8b8b;
+    }
+  }
+
+  .car-price-card__button {
+    width: 100%;
+    border: 0;
+
+    &:disabled {
+      cursor: not-allowed;
+      opacity: 0.65;
+      transform: none;
+    }
+  }
+}

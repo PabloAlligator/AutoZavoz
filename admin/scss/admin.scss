@@ -769,3 +769,25 @@ img {
     padding: 18px;
   }
 }
+
+.admin-status-select {
+  min-height: 36px;
+  padding: 0 12px;
+  border: 1px solid rgba(255, 106, 0, 0.35);
+  border-radius: 10px;
+  outline: none;
+  background: rgba(255, 106, 0, 0.08);
+  color: #f4f1f5;
+  font-size: 13px;
+  font-weight: 800;
+
+  option {
+    background: #111318;
+    color: #f4f1f5;
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+}

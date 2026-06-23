@@ -184,9 +184,67 @@ function renderCar(car, similarCars = []) {
             <strong>${price}</strong>
             <span>цена под ключ</span>
 
-            <a class="car-price-card__button" href="/#form">
-              Получить расчёт
-            </a>
+            <form class="car-lead-form" id="carLeadForm">
+  <input type="hidden" name="leadType" value="car_page" />
+  <input type="hidden" name="source" value="car_page" />
+  <input type="hidden" name="carId" value="${car.id}" />
+  <input type="hidden" name="carTitle" value="${escapeHtml(car.title)}" />
+  <input type="hidden" name="carSlug" value="${escapeHtml(car.slug)}" />
+
+  <label>
+    <span>Ваше имя</span>
+    <input
+      type="text"
+      name="customerName"
+      placeholder="Например, Павел"
+      minlength="2"
+      maxlength="80"
+      required
+    />
+  </label>
+
+  <label>
+    <span>Телефон</span>
+    <input
+      type="tel"
+      name="phone"
+      placeholder="+7 ___ ___-__-__"
+      inputmode="tel"
+      maxlength="18"
+      required
+    />
+  </label>
+
+  <label>
+    <span>Мессенджер</span>
+    <select name="messenger">
+      <option value="Телефон">Телефон</option>
+      <option value="WhatsApp">WhatsApp</option>
+      <option value="Telegram">Telegram</option>
+      <option value="MAX">MAX</option>
+    </select>
+  </label>
+
+  <label>
+    <span>Комментарий</span>
+    <textarea
+      name="message"
+      placeholder="Хочу расчёт по этому автомобилю"
+      maxlength="500"
+    ></textarea>
+  </label>
+
+  <label class="car-lead-form__agreement">
+    <input type="checkbox" required />
+    <span>Согласен на обработку персональных данных</span>
+  </label>
+
+  <button class="car-price-card__button" type="submit">
+    Получить расчёт
+  </button>
+
+  <p class="car-lead-form__message" id="carLeadFormMessage"></p>
+</form>
 
             <div class="car-price-card__messengers">
               <a href="https://wa.me/" target="_blank" rel="noopener noreferrer">
@@ -257,6 +315,7 @@ function renderCar(car, similarCars = []) {
   `;
 
   bindGalleryThumbs();
+  bindCarLeadForm();
 }
 
 function getGalleryImages(car) {
@@ -459,6 +518,77 @@ function setMetaDescription(content) {
   }
 
   meta.setAttribute('content', String(content || '').slice(0, 160));
+}
+
+function bindCarLeadForm() {
+  const form = document.querySelector('#carLeadForm');
+  const messageBox = document.querySelector('#carLeadFormMessage');
+  const submitButton = form?.querySelector('button[type="submit"]');
+
+  if (!form) return;
+
+  form.addEventListener('submit', async (event) => {
+    event.preventDefault();
+
+    const formData = new FormData(form);
+
+    const payload = {
+      leadType: String(formData.get('leadType') || 'car_page'),
+      source: String(formData.get('source') || 'car_page'),
+      carId: Number(formData.get('carId')),
+      carTitle: String(formData.get('carTitle') || ''),
+      carSlug: String(formData.get('carSlug') || ''),
+      customerName: String(formData.get('customerName') || '').trim(),
+      phone: String(formData.get('phone') || '').trim(),
+      messenger: String(formData.get('messenger') || '').trim(),
+      message: String(formData.get('message') || '').trim(),
+    };
+
+    if (payload.customerName.length < 2) {
+      messageBox.textContent = 'Введите имя.';
+      messageBox.classList.add('is-error');
+      return;
+    }
+
+    try {
+      if (submitButton) {
+        submitButton.disabled = true;
+        submitButton.textContent = 'Отправляем...';
+      }
+
+      messageBox.textContent = '';
+      messageBox.classList.remove('is-error', 'is-success');
+
+      const response = await fetch('/api/leads', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      });
+
+      const data = await response.json().catch(() => ({}));
+
+      if (!response.ok || !data.success) {
+        throw new Error(data.message || 'Не удалось отправить заявку');
+      }
+
+      form.reset();
+
+      messageBox.textContent = 'Заявка отправлена. Скоро свяжемся с вами.';
+      messageBox.classList.add('is-success');
+    } catch (error) {
+      console.error('Car lead form error:', error);
+
+      messageBox.textContent = error.message || 'Ошибка отправки заявки.';
+      messageBox.classList.add('is-error');
+    } finally {
+      if (submitButton) {
+        submitButton.disabled = false;
+        submitButton.textContent = 'Получить расчёт';
+      }
+    }
+  });
 }
 
 function escapeHtml(value) {

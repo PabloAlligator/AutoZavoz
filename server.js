@@ -10,9 +10,11 @@ const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
 // const csrf = require('csurf');
 const path = require('path');
+const prisma = require('./src/db');
 
 const publicCarsRoutes = require('./src/routes/cars.public.routes');
 const adminCarsRoutes = require('./src/routes/cars.admin.routes');
+const leadsRoutes = require('./src/routes/leads.routes');
 const app = express();
 const PORT = Number(process.env.PORT) || 3000;
 const MIN_FORM_TIME_MS = 2000;
@@ -166,6 +168,7 @@ app.use((req, res, next) => {
 app.use('/api', publicCarsRoutes);
 app.use('/api', adminAuthRoutes);
 app.use('/api', adminCarsRoutes);
+app.use('/api', leadsRoutes);
 
 const adminPagesPath = path.join(__dirname, 'admin-pages');
 
@@ -323,12 +326,20 @@ app.post('/api/send', checkOrigin, sendLimiter, async (req, res) => {
       });
     }
 
+    const name = cleanText(req.body.name, 80);
     const phone = cleanText(req.body.phone, 40);
     const email = cleanText(req.body.email, 120);
     const car = cleanText(req.body.car, 120);
     const message = cleanText(req.body.comment, 900);
     const page = cleanText(req.body.page, 200);
     const company = cleanText(req.body.company, 120);
+
+    if (name.length < 2) {
+      return res.status(400).json({
+        success: false,
+        message: 'Введите имя.',
+      });
+    }
 
     if (company) {
       return res.status(400).json({
@@ -367,9 +378,36 @@ app.post('/api/send', checkOrigin, sendLimiter, async (req, res) => {
       timeZone: 'Asia/Krasnoyarsk',
     });
 
+    await prisma.lead.create({
+      data: {
+        leadType: 'general',
+        source: 'main_form',
+
+        customerName: name,
+        phone: formattedPhone,
+        messenger: email ? `Email: ${email}` : null,
+        city: null,
+        budget: null,
+
+        message: [
+          car ? `Автомобиль: ${car}` : null,
+          message ? `Комментарий: ${message}` : null,
+          page ? `Страница: ${page}` : null,
+        ]
+          .filter(Boolean)
+          .join('\n'),
+
+        carTitleSnapshot: car || null,
+        carSlugSnapshot: null,
+
+        status: 'new',
+      },
+    });
+
     const text = `
 Новая заявка с сайта АвтоZавоз
 
+Имя: ${name}
 Телефон: ${formattedPhone}
 Email: ${email}
 Автомобиль: ${car || 'Не указан'}
@@ -379,6 +417,7 @@ Email: ${email}
     `.trim();
 
     const html = buildEmailTemplate({
+      name,
       formattedPhone,
       telLink,
       email,
@@ -472,6 +511,7 @@ ${value}
 }
 
 function buildEmailTemplate({
+  name,
   formattedPhone,
   telLink,
   email,
@@ -545,6 +585,8 @@ function buildEmailTemplate({
 <td style="padding:28px 32px;">
 
 <table width="100%" cellpadding="0" cellspacing="0">
+
+${emailRow('Имя клиента', escapeHtml(name))}
 
 ${emailRow(
   'Телефон',

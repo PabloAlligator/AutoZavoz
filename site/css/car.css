@@ -423,3 +423,93 @@ body.car-page a {
     font-size: 30px;
   }
 }
+.car-lead-form {
+  display: grid;
+  gap: 14px;
+  margin-top: 22px;
+}
+.car-lead-form label {
+  display: grid;
+  gap: 7px;
+}
+.car-lead-form label span {
+  color: rgba(244, 241, 245, 0.68);
+  font-size: 13px;
+  font-weight: 800;
+}
+.car-lead-form input,
+.car-lead-form textarea,
+.car-lead-form select {
+  width: 100%;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 10px;
+  outline: none;
+  background: rgba(0, 0, 0, 0.32);
+  color: #f4f1f5;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.car-lead-form input:focus,
+.car-lead-form textarea:focus,
+.car-lead-form select:focus {
+  border-color: rgba(255, 106, 0, 0.75);
+  box-shadow: 0 0 0 4px rgba(255, 106, 0, 0.12);
+}
+.car-lead-form input::placeholder,
+.car-lead-form textarea::placeholder,
+.car-lead-form select::placeholder {
+  color: rgba(244, 241, 245, 0.42);
+}
+.car-lead-form input,
+.car-lead-form select {
+  height: 46px;
+  padding: 0 13px;
+}
+.car-lead-form textarea {
+  min-height: 96px;
+  padding: 13px;
+  resize: vertical;
+  line-height: 1.5;
+}
+.car-lead-form select {
+  appearance: none;
+}
+.car-lead-form__agreement {
+  display: flex !important;
+  align-items: flex-start;
+  gap: 10px !important;
+  color: rgba(244, 241, 245, 0.6);
+  font-size: 12px;
+  line-height: 1.45;
+}
+.car-lead-form__agreement input {
+  flex: 0 0 auto;
+  width: 18px;
+  height: 18px;
+  margin-top: 1px;
+  accent-color: #ff6a00;
+}
+.car-lead-form__agreement span {
+  font-size: 12px !important;
+  font-weight: 500 !important;
+}
+.car-lead-form__message {
+  min-height: 18px;
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.4;
+}
+.car-lead-form__message.is-success {
+  color: #7dffab;
+}
+.car-lead-form__message.is-error {
+  color: #ff8b8b;
+}
+.car-lead-form .car-price-card__button {
+  width: 100%;
+  border: 0;
+}
+.car-lead-form .car-price-card__button:disabled {
+  cursor: not-allowed;
+  opacity: 0.65;
+  transform: none;
+}
