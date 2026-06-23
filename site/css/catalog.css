@@ -1541,7 +1541,7 @@ body.catalog-page {
   .catalog-hero {
     min-height: 330px;
     padding: 94px 12px 38px;
-    background: linear-gradient(90deg, rgba(0, 0, 0, 0.98) 0%, rgba(0, 0, 0, 0.93) 56%, rgba(0, 0, 0, 0.72) 100%), radial-gradient(circle at 88% 40%, rgba(255, 106, 0, 0.1), transparent 42%), url("../img/catalog/catalog-hero.webp") 74% center/cover no-repeat, #000000;
+    background: radial-gradient(circle at 88% 40%, rgba(255, 106, 0, 0.1), transparent 42%), url("../img/catalog-hero.webp") 74% center/cover no-repeat, #000000;
   }
   .catalog-hero::after {
     right: 12px;
