@@ -10,9 +10,11 @@ const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
 // const csrf = require('csurf');
 const path = require('path');
+const prisma = require('./src/db');
 
 const publicCarsRoutes = require('./src/routes/cars.public.routes');
 const adminCarsRoutes = require('./src/routes/cars.admin.routes');
+const leadsRoutes = require('./src/routes/leads.routes');
 const app = express();
 const PORT = Number(process.env.PORT) || 3000;
 const MIN_FORM_TIME_MS = 2000;
@@ -166,9 +168,69 @@ app.use((req, res, next) => {
 app.use('/api', publicCarsRoutes);
 app.use('/api', adminAuthRoutes);
 app.use('/api', adminCarsRoutes);
+app.use('/api', leadsRoutes);
 
-app.use(express.static(path.join(__dirname)));
+const adminPagesPath = path.join(__dirname, 'admin-pages');
+
+function requireAdminPage(req, res, next) {
+  if (req.session && req.session.admin) {
+    return next();
+  }
+
+  return res.redirect('/admin/login.html');
+}
+
+function redirectLoggedAdmin(req, res, next) {
+  if (req.session && req.session.admin) {
+    return res.redirect('/admin/cars.html');
+  }
+
+  return next();
+}
+
+app.get('/admin', (req, res) => {
+  if (req.session && req.session.admin) {
+    return res.redirect('/admin/cars.html');
+  }
+
+  return res.redirect('/admin/login.html');
+});
+
+app.get('/admin/dashboard.html', requireAdminPage, (req, res) => {
+  res.redirect('/admin/cars.html');
+});
+
+app.get('/admin/login.html', redirectLoggedAdmin, (req, res) => {
+  res.sendFile(path.join(adminPagesPath, 'login.html'));
+});
+
+app.get('/admin/cars.html', requireAdminPage, (req, res) => {
+  res.sendFile(path.join(adminPagesPath, 'cars.html'));
+});
+
+app.get('/admin/car-edit.html', requireAdminPage, (req, res) => {
+  res.sendFile(path.join(adminPagesPath, 'car-edit.html'));
+});
+
+app.get('/admin/leads.html', requireAdminPage, (req, res) => {
+  res.sendFile(path.join(adminPagesPath, 'leads.html'));
+});
+
+app.use('/site', express.static(path.join(__dirname, 'site')));
+app.use('/admin', express.static(path.join(__dirname, 'admin')));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
+app.get('/catalog.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'catalog.html'));
+});
+
+app.get('/cars/:slug', (req, res) => {
+  res.sendFile(path.join(__dirname, 'car.html'));
+});
+
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'index.html'));
+});
 
 const requiredEnv = [
   'SMTP_HOST',
@@ -264,12 +326,20 @@ app.post('/api/send', checkOrigin, sendLimiter, async (req, res) => {
       });
     }
 
+    const name = cleanText(req.body.name, 80);
     const phone = cleanText(req.body.phone, 40);
     const email = cleanText(req.body.email, 120);
     const car = cleanText(req.body.car, 120);
     const message = cleanText(req.body.comment, 900);
     const page = cleanText(req.body.page, 200);
     const company = cleanText(req.body.company, 120);
+
+    if (name.length < 2) {
+      return res.status(400).json({
+        success: false,
+        message: 'Введите имя.',
+      });
+    }
 
     if (company) {
       return res.status(400).json({
@@ -308,9 +378,36 @@ app.post('/api/send', checkOrigin, sendLimiter, async (req, res) => {
       timeZone: 'Asia/Krasnoyarsk',
     });
 
+    await prisma.lead.create({
+      data: {
+        leadType: 'general',
+        source: 'main_form',
+
+        customerName: name,
+        phone: formattedPhone,
+        messenger: email ? `Email: ${email}` : null,
+        city: null,
+        budget: null,
+
+        message: [
+          car ? `Автомобиль: ${car}` : null,
+          message ? `Комментарий: ${message}` : null,
+          page ? `Страница: ${page}` : null,
+        ]
+          .filter(Boolean)
+          .join('\n'),
+
+        carTitleSnapshot: car || null,
+        carSlugSnapshot: null,
+
+        status: 'new',
+      },
+    });
+
     const text = `
 Новая заявка с сайта АвтоZавоз
 
+Имя: ${name}
 Телефон: ${formattedPhone}
 Email: ${email}
 Автомобиль: ${car || 'Не указан'}
@@ -320,6 +417,7 @@ Email: ${email}
     `.trim();
 
     const html = buildEmailTemplate({
+      name,
       formattedPhone,
       telLink,
       email,
@@ -353,7 +451,7 @@ Email: ${email}
 });
 
 app.use((req, res) => {
-  res.sendFile(path.join(__dirname, 'index.html'));
+  res.status(404).sendFile(path.join(__dirname, 'index.html'));
 });
 
 transporter.verify((error) => {
@@ -413,6 +511,7 @@ ${value}
 }
 
 function buildEmailTemplate({
+  name,
   formattedPhone,
   telLink,
   email,
@@ -486,6 +585,8 @@ function buildEmailTemplate({
 <td style="padding:28px 32px;">
 
 <table width="100%" cellpadding="0" cellspacing="0">
+
+${emailRow('Имя клиента', escapeHtml(name))}
 
 ${emailRow(
   'Телефон',

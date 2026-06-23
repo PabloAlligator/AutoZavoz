@@ -344,6 +344,7 @@ if (phoneInput) {
         e.target.value = result;
     });
 }
+
 //  форма
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -488,3 +489,135 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 });
+
+const homeCarsGrid = document.querySelector('#homeCarsGrid');
+
+async function loadHomeCars() {
+  if (!homeCarsGrid) return;
+
+  try {
+    const response = await fetch('/api/cars?home=true');
+    const data = await response.json();
+
+    if (!response.ok || !data.success) {
+      throw new Error(data.message || 'Ошибка загрузки автомобилей');
+    }
+
+    const cars = Array.isArray(data.cars) ? data.cars.slice(0, 6) : [];
+
+    if (!cars.length) {
+      homeCarsGrid.innerHTML = `
+        <p class="cars__empty">
+          Автомобили для главной пока не выбраны. Отметьте авто в админке:
+          “Показывать на главной”.
+        </p>
+      `;
+      return;
+    }
+
+    homeCarsGrid.innerHTML = cars.map(createHomeCarCard).join('');
+
+    homeCarsGrid.querySelectorAll('[data-home-car-url]').forEach((card) => {
+      card.addEventListener('click', () => {
+        const url = card.dataset.homeCarUrl;
+
+        if (!url) return;
+
+        window.location.href = url;
+      });
+
+      card.addEventListener('keydown', (event) => {
+        if (event.key !== 'Enter') return;
+
+        const url = card.dataset.homeCarUrl;
+
+        if (!url) return;
+
+        window.location.href = url;
+      });
+    });
+  } catch (error) {
+    console.error('Home cars load error:', error);
+
+    homeCarsGrid.innerHTML = `
+      <p class="cars__empty">
+        Не удалось загрузить автомобили. Попробуйте позже.
+      </p>
+    `;
+  }
+}
+
+function createHomeCarCard(car) {
+  const image =
+    car.previewImage ||
+    car.mainImage ||
+    car.image ||
+    '/site/img/logoIcon.png';
+
+  const title = car.title || 'Автомобиль';
+  const slug = car.slug || '';
+  const url = slug ? `/cars/${encodeURIComponent(slug)}` : '/catalog.html';
+
+  return `
+    <article
+      class="cars-card"
+      role="listitem"
+      tabindex="0"
+      data-home-car-url="${escapeHomeCarHTML(url)}"
+    >
+      <div class="cars-card__image">
+        <img
+          src="${escapeHomeCarHTML(image)}"
+          alt="${escapeHomeCarHTML(title)}"
+          loading="lazy"
+          decoding="async"
+        />
+
+        <span class="cars-card__badge">
+          ${escapeHomeCarHTML(car.badge || 'В наличии под заказ')}
+        </span>
+      </div>
+
+      <div class="cars-card__content">
+        <h3 class="cars-card__title">${escapeHomeCarHTML(title)}</h3>
+
+        <div class="cars-card__meta">
+          <div class="cars-card__meta-item">
+            <span class="cars-card__dot" aria-hidden="true"></span>
+            <span>${escapeHomeCarHTML(car.year || 'Год уточняется')}</span>
+          </div>
+
+          <div class="cars-card__meta-item">
+            <span class="cars-card__dot" aria-hidden="true"></span>
+            <span>${escapeHomeCarHTML(car.engine || 'Двигатель уточняется')}</span>
+          </div>
+        </div>
+
+        <div class="cars-card__bottom">
+          <div class="cars-card__price">
+            ${escapeHomeCarHTML(car.price || 'Цена уточняется')}
+          </div>
+
+          <button
+            type="button"
+            class="cars-card__arrow"
+            aria-label="Подробнее об автомобиле ${escapeHomeCarHTML(title)}"
+          >
+            ›
+          </button>
+        </div>
+      </div>
+    </article>
+  `;
+}
+
+function escapeHomeCarHTML(value) {
+  return String(value || '')
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&#039;');
+}
+
+loadHomeCars();

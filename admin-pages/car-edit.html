@@ -1,0 +1,400 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Автомобиль | ShumDev CMS</title>
+
+    <link rel="stylesheet" href="/site/css/admin.min.css" />
+  </head>
+
+  <body class="admin-body" data-admin-page="car-edit">
+    <div class="admin-shell">
+      <aside class="admin-sidebar">
+        <div class="admin-sidebar__brand">
+          <span>ShumDev CMS</span>
+          <strong>AutoZavoz</strong>
+        </div>
+
+        <nav class="admin-sidebar__nav">
+          <a href="/admin/cars.html" data-admin-nav>Автомобили</a>
+          <a href="/admin/leads.html" data-admin-nav>Заявки</a>
+        </nav>
+
+        <button class="admin-sidebar__logout" type="button" data-admin-logout>
+          Выйти
+        </button>
+      </aside>
+
+      <main class="admin-main">
+        <header class="admin-topbar">
+          <div>
+            <p class="admin-topbar__eyebrow">Каталог</p>
+            <h1 class="admin-topbar__title" id="carEditTitle">
+              Новый автомобиль
+            </h1>
+          </div>
+
+          <a class="admin-button admin-button--ghost" href="/admin/cars.html">
+            Назад
+          </a>
+        </header>
+
+        <section class="admin-panel">
+          <form class="admin-form" id="carForm" enctype="multipart/form-data">
+            <div class="admin-form__section">
+              <h2>Основное</h2>
+
+              <div class="admin-form__grid">
+                <label class="admin-field">
+                  <span>Название</span>
+                  <input
+                    type="text"
+                    name="title"
+                    placeholder="Toyota Land Cruiser 300 ZX, 2023"
+                    required
+                  />
+                </label>
+
+                <label class="admin-field">
+                  <span>Slug</span>
+                  <input
+                    type="text"
+                    name="slug"
+                    placeholder="toyota-land-cruiser-300-zx-2023"
+                    required
+                  />
+                </label>
+
+                <label class="admin-field">
+                  <span>Марка</span>
+                  <input type="text" name="brand" placeholder="Toyota" />
+                </label>
+
+                <label class="admin-field">
+                  <span>Модель</span>
+                  <input
+                    type="text"
+                    name="model"
+                    placeholder="Land Cruiser 300"
+                  />
+                </label>
+
+                <label class="admin-field">
+                  <span>Цена</span>
+                  <input type="text" name="price" placeholder="12 900 000 ₽" />
+                </label>
+
+                <label class="admin-field">
+                  <span>Старая цена</span>
+                  <input type="text" name="oldPrice" placeholder="13 500 000 ₽" />
+                </label>
+
+                <label class="admin-field">
+                  <span>Бейдж</span>
+                  <input
+                    type="text"
+                    name="badge"
+                    placeholder="Проверенный автомобиль"
+                  />
+                </label>
+
+                <label class="admin-field">
+                  <span>Наличие</span>
+                  <input type="text" name="availability" placeholder="В наличии" />
+                </label>
+
+                <label class="admin-field">
+                  <span>Страна</span>
+                  <input type="text" name="country" placeholder="Япония" />
+                </label>
+
+                <label class="admin-field">
+                  <span>Город</span>
+                  <input type="text" name="city" placeholder="Владивосток" />
+                </label>
+              </div>
+            </div>
+
+            <div class="admin-form__section">
+              <h2>Характеристики</h2>
+
+              <div class="admin-form__grid">
+                <label class="admin-field">
+                  <span>Год</span>
+                  <input type="text" name="year" placeholder="2023" />
+                </label>
+
+                <label class="admin-field">
+                  <span>Пробег</span>
+                  <input type="text" name="mileage" placeholder="27 000 км" />
+                </label>
+
+                <label class="admin-field">
+                  <span>Двигатель</span>
+                  <input type="text" name="engine" placeholder="3.5 л бензин" />
+                </label>
+
+                <label class="admin-field">
+                  <span>Мощность</span>
+                  <input type="text" name="power" placeholder="415 л.с." />
+                </label>
+
+                <label class="admin-field">
+                  <span>Топливо</span>
+                  <input type="text" name="fuel" placeholder="Бензин" />
+                </label>
+
+                <label class="admin-field">
+                  <span>Коробка</span>
+                  <input type="text" name="gearbox" placeholder="АКПП" />
+                </label>
+
+                <label class="admin-field">
+                  <span>Привод</span>
+                  <input type="text" name="drive" placeholder="4WD" />
+                </label>
+
+                <label class="admin-field">
+                  <span>Кузов</span>
+                  <input type="text" name="body" placeholder="Внедорожник 5 дв." />
+                </label>
+
+                <label class="admin-field">
+                  <span>Цвет</span>
+                  <input type="text" name="color" placeholder="Чёрный металлик" />
+                </label>
+
+                <label class="admin-field">
+                  <span>Комплектация</span>
+                  <input type="text" name="complectation" placeholder="ZX" />
+                </label>
+
+                <label class="admin-field">
+                  <span>Оценка аукциона</span>
+                  <input type="text" name="grade" placeholder="4.5 (B)" />
+                </label>
+
+                <label class="admin-field">
+                  <span>Документы</span>
+                  <input type="text" name="documents" placeholder="ПТС" />
+                </label>
+
+                <label class="admin-field admin-field--wide">
+                  <span>Ссылка на аукцион</span>
+                  <input
+                    type="url"
+                    name="auctionUrl"
+                    placeholder="https://auc.tajp.com/"
+                  />
+                </label>
+              </div>
+            </div>
+
+            <div class="admin-form__section">
+              <h2>Описание</h2>
+
+              <div class="admin-form__grid">
+                <label class="admin-field admin-field--wide">
+                  <span>Краткое описание</span>
+                  <textarea
+                    name="shortDescription"
+                    placeholder="Короткое описание для карточки в каталоге"
+                  ></textarea>
+                </label>
+
+                <label class="admin-field admin-field--wide">
+                  <span>Полное описание</span>
+                  <textarea
+                    name="description"
+                    placeholder="Подробное описание автомобиля для страницы"
+                  ></textarea>
+                </label>
+
+                <label class="admin-field admin-field--wide">
+                  <span>Особенности</span>
+                  <textarea
+                    name="features"
+                    placeholder="Кожаный салон, камеры кругового обзора, адаптивный круиз..."
+                  ></textarea>
+                </label>
+
+                <label class="admin-field admin-field--wide">
+                  <span>Состояние коротко</span>
+                  <textarea
+                    name="conditionText"
+                    placeholder="Без ДТП и окрасов&#10;Отличное техническое состояние&#10;Готов к постановке на учёт"
+                  ></textarea>
+                </label>
+
+                <label class="admin-field admin-field--wide">
+                  <span>Документы и сервис</span>
+                  <textarea
+                    name="documentsText"
+                    placeholder="ПТС РФ&#10;Таможенная декларация&#10;Аукционный лист"
+                  ></textarea>
+                </label>
+
+                <label class="admin-field admin-field--wide">
+                  <span>Сервисный текст</span>
+                  <textarea
+                    name="serviceText"
+                    placeholder="Проверка техники и документов&#10;Помощь с доставкой по России"
+                  ></textarea>
+                </label>
+              </div>
+            </div>
+
+            <div class="admin-form__section">
+              <h2>Фото</h2>
+
+              <div class="admin-form__grid">
+                <div class="admin-field">
+                  <span>Превью для каталога</span>
+
+                  <label class="admin-upload" for="previewImageFile">
+                    <input
+                      type="file"
+                      id="previewImageFile"
+                      name="previewImage"
+                      accept="image/jpeg,image/png,image/webp"
+                    />
+
+                    <span class="admin-upload__button">Выбрать превью</span>
+                    <small id="previewImageName">JPG, PNG или WEBP до 5 МБ</small>
+                  </label>
+
+                  <div class="admin-image-preview" id="previewImagePreview" hidden>
+                    <img src="" alt="Превью авто" />
+                  </div>
+                </div>
+
+                <div class="admin-field">
+                  <span>Фото для карточки / старое поле</span>
+
+                  <label class="admin-upload" for="imageFile">
+                    <input
+                      type="file"
+                      id="imageFile"
+                      name="image"
+                      accept="image/jpeg,image/png,image/webp"
+                    />
+
+                    <span class="admin-upload__button">Выбрать фото</span>
+                    <small id="imageName">JPG, PNG или WEBP до 5 МБ</small>
+                  </label>
+
+                  <div class="admin-image-preview" id="imagePreview" hidden>
+                    <img src="" alt="Фото авто" />
+                  </div>
+                </div>
+
+                <div class="admin-field">
+                  <span>Главное фото страницы</span>
+
+                  <label class="admin-upload" for="mainImageFile">
+                    <input
+                      type="file"
+                      id="mainImageFile"
+                      name="mainImage"
+                      accept="image/jpeg,image/png,image/webp"
+                    />
+
+                    <span class="admin-upload__button">Выбрать главное фото</span>
+                    <small id="mainImageName">JPG, PNG или WEBP до 5 МБ</small>
+                  </label>
+
+                  <div class="admin-image-preview" id="mainImagePreview" hidden>
+                    <img src="" alt="Главное фото авто" />
+                  </div>
+                </div>
+
+                <div class="admin-field">
+                  <span>Галерея</span>
+
+                  <label class="admin-upload" for="galleryImagesFile">
+                    <input
+                      type="file"
+                      id="galleryImagesFile"
+                      name="galleryImages"
+                      accept="image/jpeg,image/png,image/webp"
+                      multiple
+                    />
+
+                    <span class="admin-upload__button">Добавить фото</span>
+                    <small id="galleryImagesName">
+                      Можно выбрать несколько фото
+                    </small>
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <div class="admin-form__section">
+              <h2>SEO</h2>
+
+              <div class="admin-form__grid">
+                <label class="admin-field admin-field--wide">
+                  <span>SEO title</span>
+                  <input
+                    type="text"
+                    name="seoTitle"
+                    placeholder="Toyota Land Cruiser 300 ZX 2023 под заказ — АвтоZавоз"
+                  />
+                </label>
+
+                <label class="admin-field admin-field--wide">
+                  <span>SEO description</span>
+                  <textarea
+                    name="seoDescription"
+                    placeholder="Описание для поисковых систем"
+                  ></textarea>
+                </label>
+              </div>
+            </div>
+
+            <div class="admin-form__section">
+              <h2>Публикация</h2>
+
+              <div class="admin-form__grid">
+                <label class="admin-field">
+                  <span>Порядок сортировки</span>
+                  <input type="number" name="sortOrder" value="100" min="0" />
+                </label>
+
+                <label class="admin-checkbox">
+                  <input type="checkbox" name="isActive" checked />
+                  <span>Опубликован</span>
+                </label>
+
+                <label class="admin-checkbox">
+                  <input type="checkbox" name="showOnHome" />
+                  <span>Показывать на главной</span>
+                </label>
+
+                <label class="admin-checkbox">
+                  <input type="checkbox" name="isFeatured" />
+                  <span>Избранный автомобиль</span>
+                </label>
+              </div>
+            </div>
+
+            <div class="admin-form__actions">
+              <a class="admin-button admin-button--ghost" href="/admin/cars.html">
+                Отмена
+              </a>
+
+              <button class="admin-button" type="submit" id="carSubmitButton">
+                Сохранить авто
+              </button>
+            </div>
+          </form>
+        </section>
+      </main>
+    </div>
+
+    <script src="/admin/js/admin.js"></script>
+    <script src="/admin/js/car-edit.js"></script>
+  </body>
+</html>
