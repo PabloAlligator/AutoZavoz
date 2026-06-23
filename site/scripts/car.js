@@ -70,10 +70,10 @@ async function loadCar() {
 function renderCar(car, similarCars = []) {
   const title = escapeHtml(car.title || 'Автомобиль');
   const price = escapeHtml(car.price || 'Цена уточняется');
-  const mainImage =
-    car.mainImage || car.image || car.previewImage || '/site/img/logoIcon.png';
+  const galleryImages = getGalleryImages(car);
+  const mainImage = galleryImages[0]?.image || '/site/img/logoIcon.png';
 
-  document.title = `${car.title || 'Автомобиль'} — АвтоZавоз`;
+  document.title = car.seoTitle || `${car.title || 'Автомобиль'} — АвтоZавоз`;
 
   const seoDescription =
     car.seoDescription ||
@@ -112,14 +112,26 @@ function renderCar(car, similarCars = []) {
         <div class="car-detail__content">
           <section class="car-gallery">
             <div class="car-gallery__main">
-              <img src="${escapeHtml(mainImage)}" alt="${title}" />
+              <img
+                id="carGalleryMainImage"
+                src="${escapeHtml(mainImage)}"
+                alt="${title}"
+              />
 
               ${
                 car.badge
                   ? `<span class="car-gallery__badge">${escapeHtml(car.badge)}</span>`
                   : ''
               }
+
+              ${
+                galleryImages.length
+                  ? `<span class="car-gallery__count">${galleryImages.length} фото</span>`
+                  : ''
+              }
             </div>
+
+            ${createGalleryThumbs(galleryImages)}
           </section>
 
           <section class="car-card">
@@ -132,6 +144,7 @@ function renderCar(car, similarCars = []) {
               ${createSpec('Пробег', car.mileage)}
               ${createSpec('Двигатель', car.engine)}
               ${createSpec('Мощность', car.power)}
+              ${createSpec('Топливо', car.fuel)}
               ${createSpec('Коробка передач', car.gearbox)}
               ${createSpec('Привод', car.drive)}
               ${createSpec('Кузов', car.body)}
@@ -143,10 +156,27 @@ function renderCar(car, similarCars = []) {
             </div>
           </section>
 
-          <section class="car-card">
-            <h2>Описание</h2>
-            <p>${escapeHtml(car.description || car.shortDescription || 'Описание автомобиля скоро появится.')}</p>
-          </section>
+          ${
+            car.description || car.shortDescription
+              ? `
+                <section class="car-card">
+                  <h2>Описание</h2>
+                  <p>${escapeHtml(car.description || car.shortDescription)}</p>
+                </section>
+              `
+              : ''
+          }
+
+          ${
+            car.features
+              ? `
+                <section class="car-card">
+                  <h2>Особенности</h2>
+                  ${createTextList(car.features)}
+                </section>
+              `
+              : ''
+          }
         </div>
 
         <aside class="car-detail__aside">
@@ -174,12 +204,154 @@ function renderCar(car, similarCars = []) {
               <p>Доставка и растаможка под ключ</p>
             </div>
           </div>
+
+          ${
+            car.conditionText
+              ? `
+                <div class="car-side-card">
+                  <h2>Состояние коротко</h2>
+                  ${createTextList(car.conditionText)}
+                </div>
+              `
+              : ''
+          }
+
+          ${
+            car.documentsText
+              ? `
+                <div class="car-side-card">
+                  <h2>Документы и сервис</h2>
+                  ${createTextList(car.documentsText)}
+                </div>
+              `
+              : ''
+          }
+
+          ${
+            car.serviceText
+              ? `
+                <div class="car-side-card">
+                  <h2>Сопровождение</h2>
+                  ${createTextList(car.serviceText)}
+                </div>
+              `
+              : ''
+          }
         </aside>
       </div>
+
+      <section class="car-cta">
+        <div>
+          <h2>Хотите похожий автомобиль под заказ?</h2>
+          <p>
+            Подберём, проверим и привезём автомобиль под ваши требования
+            из Японии, Кореи, Китая или ОАЭ.
+          </p>
+        </div>
+
+        <a href="/#form">Оставить заявку</a>
+      </section>
 
       ${createSimilarCars(similarCars)}
     </div>
   `;
+
+  bindGalleryThumbs();
+}
+
+function getGalleryImages(car) {
+  const images = [];
+
+  [
+    {
+      image: car.mainImage,
+      alt: car.title,
+    },
+    {
+      image: car.image,
+      alt: car.title,
+    },
+    {
+      image: car.previewImage,
+      alt: car.title,
+    },
+  ].forEach((item) => {
+    if (item.image) {
+      images.push(item);
+    }
+  });
+
+  if (Array.isArray(car.images)) {
+    car.images.forEach((item) => {
+      if (item.image) {
+        images.push({
+          image: item.image,
+          alt: item.alt || car.title,
+        });
+      }
+    });
+  }
+
+  const uniqueImages = [];
+  const usedPaths = new Set();
+
+  images.forEach((item) => {
+    if (usedPaths.has(item.image)) return;
+
+    usedPaths.add(item.image);
+    uniqueImages.push(item);
+  });
+
+  return uniqueImages;
+}
+
+function createGalleryThumbs(images) {
+  if (images.length <= 1) return '';
+
+  return `
+    <div class="car-gallery__thumbs">
+      ${images
+        .map((item, index) => {
+          return `
+            <button
+              class="car-gallery__thumb ${index === 0 ? 'active' : ''}"
+              type="button"
+              data-gallery-image="${escapeHtml(item.image)}"
+              aria-label="Показать фото ${index + 1}"
+            >
+              <img
+                src="${escapeHtml(item.image)}"
+                alt="${escapeHtml(item.alt || `Фото ${index + 1}`)}"
+              />
+            </button>
+          `;
+        })
+        .join('')}
+    </div>
+  `;
+}
+
+function bindGalleryThumbs() {
+  const mainImage = document.querySelector('#carGalleryMainImage');
+  const thumbs = document.querySelectorAll('[data-gallery-image]');
+
+  if (!mainImage || !thumbs.length) return;
+
+  thumbs.forEach((thumb) => {
+    thumb.addEventListener('click', () => {
+      const image = thumb.dataset.galleryImage;
+
+      if (!image) return;
+
+      mainImage.src = image;
+
+      thumbs.forEach((item) => {
+        item.classList.remove('active');
+      });
+
+      thumb.classList.add('active');
+    });
+  });
 }
 
 function createMetaItem(value) {
@@ -196,6 +368,29 @@ function createSpec(label, value) {
       <span>${escapeHtml(label)}</span>
       <strong>${escapeHtml(value)}</strong>
     </div>
+  `;
+}
+
+function createTextList(value) {
+  const items = String(value || '')
+    .split('\n')
+    .map((item) => item.trim())
+    .filter(Boolean);
+
+  if (!items.length) return '';
+
+  if (items.length === 1) {
+    return `<p>${escapeHtml(items[0])}</p>`;
+  }
+
+  return `
+    <ul class="car-text-list">
+      ${items
+        .map((item) => {
+          return `<li>${escapeHtml(item)}</li>`;
+        })
+        .join('')}
+    </ul>
   `;
 }
 
@@ -220,9 +415,11 @@ function createSimilarCars(cars) {
 
             return `
               <article class="car-similar-card">
-                <a class="car-similar-card__link" href="/cars/${encodeURIComponent(
-                  car.slug,
-                )}" aria-label="Подробнее: ${escapeHtml(car.title)}"></a>
+                <a
+                  class="car-similar-card__link"
+                  href="/cars/${encodeURIComponent(car.slug)}"
+                  aria-label="Подробнее: ${escapeHtml(car.title)}"
+                ></a>
 
                 <img src="${escapeHtml(image)}" alt="${escapeHtml(car.title)}" />
 

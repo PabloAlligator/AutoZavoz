@@ -59,77 +59,59 @@ async function loadCars() {
   } catch (error) {
     console.error('Catalog load error:', error);
 
-    catalogGrid.innerHTML = `
-      <div class="catalog-empty">
-        Не удалось загрузить каталог. Попробуйте позже.
-      </div>
-    `;
+    catalogGrid.innerHTML =
+      '<div class="catalog-empty">Не удалось загрузить каталог. Попробуйте позже.</div>';
   }
 }
 
 function renderCars(items) {
-  if (!catalogGrid) return;
-
   if (!items.length) {
-    catalogGrid.innerHTML = `
-      <div class="catalog-empty">
-        Автомобили скоро появятся в каталоге.
-      </div>
-    `;
+    catalogGrid.innerHTML =
+      '<div class="catalog-empty">Автомобили скоро появятся в каталоге.</div>';
     return;
   }
 
   catalogGrid.innerHTML = items.map(createCarCard).join('');
 
-  document.querySelectorAll('.cars-card[data-url]').forEach((card) => {
-    card.addEventListener('click', (event) => {
-      const interactiveElement = event.target.closest('a, button');
+  document.querySelectorAll('.cars-card').forEach((card) => {
+    card.addEventListener('click', () => {
+      const url = card.dataset.url;
 
-      if (interactiveElement) return;
+      if (!url) return;
 
-      window.location.href = card.dataset.url;
+      window.location.href = url;
     });
 
     card.addEventListener('keydown', (event) => {
-      if (event.key === 'Enter') {
-        window.location.href = card.dataset.url;
-      }
+      if (event.key !== 'Enter') return;
+
+      const url = card.dataset.url;
+
+      if (!url) return;
+
+      window.location.href = url;
     });
   });
 }
 
 function createCarCard(car) {
-  const image = car.previewImage || car.mainImage || car.image || '/site/img/logoIcon.png';
+  const image =
+    car.previewImage ||
+    car.mainImage ||
+    car.image ||
+    '/site/img/logoIcon.png';
+
   const title = car.title || 'Автомобиль';
   const slug = car.slug || '';
-  const carUrl = slug ? `/cars/${encodeURIComponent(slug)}` : '/catalog.html';
 
-  const meta = [
-    car.year,
-    car.mileage,
-    car.engine,
-    car.drive,
-    car.gearbox,
-  ]
-    .filter(Boolean)
-    .join(' • ');
-
-  const tags = [
-    car.gearbox,
-    car.drive,
-    car.country,
-    car.city,
-    car.availability,
-  ]
-    .filter(Boolean)
-    .slice(0, 5);
+  const url = slug ? `/cars/${encodeURIComponent(slug)}` : '/catalog.html';
 
   return `
     <article
       class="cars-card"
       role="listitem"
       tabindex="0"
-      data-url="${escapeHtml(carUrl)}"
+      data-url="${escapeHtml(url)}"
     >
       <div class="cars-card__image">
         <img
@@ -140,81 +122,61 @@ function createCarCard(car) {
         >
 
         <span class="cars-card__badge">
-          ${escapeHtml(car.badge || car.availability || 'Под заказ')}
+          ${escapeHtml(car.badge || 'Под заказ')}
         </span>
 
-        ${
-          car.grade
-            ? `
-              <span class="cars-card__grade">
-                ${escapeHtml(car.grade)}
-              </span>
-            `
-            : ''
-        }
+        <span class="cars-card__grade">
+          ${escapeHtml(car.grade || '—')}
+        </span>
       </div>
 
       <div class="cars-card__content">
-        <h3 class="cars-card__title">
-          ${escapeHtml(title)}
-        </h3>
+        <div class="cars-card__head">
+          <h3 class="cars-card__title">${escapeHtml(title)}</h3>
 
-        ${
-          meta
-            ? `
-              <div class="cars-card__meta">
-                ${meta
-                  .split(' • ')
-                  .map((item) => {
-                    return `
-                      <div class="cars-card__meta-item">
-                        <span class="cars-card__dot" aria-hidden="true"></span>
-                        <span>${escapeHtml(item)}</span>
-                      </div>
-                    `;
-                  })
-                  .join('')}
-              </div>
-            `
-            : ''
-        }
+          <p class="cars-card__complectation">
+            ${escapeHtml(car.complectation || 'Комплектация уточняется')}
+          </p>
+        </div>
 
-        ${
-          tags.length
-            ? `
-              <div class="cars-card__tags">
-                ${tags
-                  .map((tag) => {
-                    return `<span>${escapeHtml(tag)}</span>`;
-                  })
-                  .join('')}
-              </div>
-            `
-            : ''
-        }
-
-        ${
-          car.shortDescription
-            ? `
-              <p class="cars-card__description">
-                ${escapeHtml(car.shortDescription)}
-              </p>
-            `
-            : ''
-        }
-
-        <div class="cars-card__bottom">
-          <div class="cars-card__price">
-            ${escapeHtml(car.price || 'Цена уточняется')}
+        <div class="cars-card__specs">
+          <div>
+            <span>Год</span>
+            <strong>${escapeHtml(car.year || '—')}</strong>
           </div>
 
-          <a
+          <div>
+            <span>Пробег</span>
+            <strong>${escapeHtml(car.mileage || '—')}</strong>
+          </div>
+
+          <div>
+            <span>Двигатель</span>
+            <strong>${escapeHtml(car.engine || '—')}</strong>
+          </div>
+
+          <div>
+            <span>Привод</span>
+            <strong>${escapeHtml(car.drive || '—')}</strong>
+          </div>
+        </div>
+
+        <div class="cars-card__bottom">
+          <div>
+            <span class="cars-card__price-label">Стоимость под ключ</span>
+
+            <div class="cars-card__price">
+              ${escapeHtml(car.price || 'Цена уточняется')}
+            </div>
+          </div>
+
+          <button
+            type="button"
             class="cars-card__arrow"
-            href="${escapeHtml(carUrl)}"
             aria-label="Подробнее об автомобиле ${escapeHtml(title)}"
           >
             ›
-          </a>
+          </button>
         </div>
       </div>
     </article>
@@ -231,20 +193,11 @@ catalogSearch?.addEventListener('input', () => {
       car.model,
       car.year,
       car.engine,
-      car.power,
-      car.fuel,
-      car.mileage,
       car.drive,
       car.gearbox,
-      car.body,
-      car.color,
       car.complectation,
-      car.country,
-      car.city,
       car.badge,
-      car.availability,
       car.price,
-      car.shortDescription,
     ]
       .filter(Boolean)
       .join(' ')
@@ -258,9 +211,9 @@ catalogSearch?.addEventListener('input', () => {
 
 function escapeHtml(value) {
   return String(value || '')
-    .replaceAll('&', '&amp;')
-    .replaceAll('<', '&lt;')
-    .replaceAll('>', '&gt;')
-    .replaceAll('"', '&quot;')
-    .replaceAll("'", '&#039;');
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
 }
