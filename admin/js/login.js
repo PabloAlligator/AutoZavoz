@@ -8,11 +8,13 @@ async function checkAuth() {
   try {
     const response = await fetch('/api/admin/me', {
       method: 'GET',
-      credentials: 'same-origin'
+      credentials: 'same-origin',
     });
 
-    if (response.ok) {
-      window.location.href = '/admin/dashboard.html';
+    const data = await response.json().catch(() => ({}));
+
+    if (response.ok && data.success) {
+      window.location.href = '/admin/cars.html';
     }
   } catch (error) {
     console.error('Auth check error:', error);
@@ -30,27 +32,27 @@ form?.addEventListener('submit', async (event) => {
 
   const payload = {
     email: String(formData.get('email') || '').trim(),
-    password: String(formData.get('password') || '')
+    password: String(formData.get('password') || ''),
   };
 
   try {
     const response = await fetch('/api/admin/login', {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       },
       credentials: 'same-origin',
-      body: JSON.stringify(payload)
+      body: JSON.stringify(payload),
     });
 
-    const data = await response.json();
+    const data = await response.json().catch(() => ({}));
 
     if (!response.ok || !data.success) {
       throw new Error(data.message || 'Ошибка входа');
     }
 
     button.textContent = 'Готово';
-    window.location.href = '/admin/dashboard.html';
+    window.location.href = '/admin/cars.html';
   } catch (error) {
     message.textContent = error.message || 'Не удалось войти';
     button.disabled = false;

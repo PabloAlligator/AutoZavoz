@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Автомобили | ShumDev CMS</title>
+
+    <link rel="stylesheet" href="/site/css/admin.min.css" />
+  </head>
+
+  <body class="admin-body" data-admin-page="cars">
+    <div class="admin-shell">
+      <aside class="admin-sidebar">
+        <div class="admin-sidebar__brand">
+          <span>ShumDev CMS</span>
+          <strong>AutoZavoz</strong>
+        </div>
+
+        <nav class="admin-sidebar__nav">
+          <a href="/admin/cars.html" data-admin-nav>Автомобили</a>
+          <a href="/admin/leads.html" data-admin-nav>Заявки</a>
+        </nav>
+
+        <button class="admin-sidebar__logout" type="button" data-admin-logout>
+          Выйти
+        </button>
+      </aside>
+
+      <main class="admin-main">
+        <header class="admin-topbar">
+          <div>
+            <p class="admin-topbar__eyebrow">Каталог</p>
+            <h1 class="admin-topbar__title">Автомобили</h1>
+          </div>
+
+          <a class="admin-button" href="/admin/car-edit.html">
+            Добавить авто
+          </a>
+        </header>
+
+        <section class="admin-panel">
+          <div class="admin-panel__head">
+            <div>
+              <h2>Список автомобилей</h2>
+              <p id="carsCount">Загрузка...</p>
+            </div>
+          </div>
+
+          <div class="admin-table-wrap">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>Автомобиль</th>
+                  <th>Цена</th>
+                  <th>Характеристики</th>
+                  <th>Статус</th>
+                  <th>Главная</th>
+                  <th></th>
+                </tr>
+              </thead>
+
+              <tbody id="carsTableBody">
+                <tr>
+                  <td colspan="6">Загружаем автомобили...</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <p class="admin-empty" id="carsEmpty" hidden>
+            Автомобили пока не добавлены.
+          </p>
+        </section>
+      </main>
+    </div>
+
+    <script src="/admin/js/admin.js"></script>
+    <script src="/admin/js/cars.js"></script>
+  </body>
+</html>

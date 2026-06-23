@@ -167,8 +167,67 @@ app.use('/api', publicCarsRoutes);
 app.use('/api', adminAuthRoutes);
 app.use('/api', adminCarsRoutes);
 
-app.use(express.static(path.join(__dirname)));
+const adminPagesPath = path.join(__dirname, 'admin-pages');
+
+function requireAdminPage(req, res, next) {
+  if (req.session && req.session.admin) {
+    return next();
+  }
+
+  return res.redirect('/admin/login.html');
+}
+
+function redirectLoggedAdmin(req, res, next) {
+  if (req.session && req.session.admin) {
+    return res.redirect('/admin/cars.html');
+  }
+
+  return next();
+}
+
+app.get('/admin', (req, res) => {
+  if (req.session && req.session.admin) {
+    return res.redirect('/admin/cars.html');
+  }
+
+  return res.redirect('/admin/login.html');
+});
+
+app.get('/admin/dashboard.html', requireAdminPage, (req, res) => {
+  res.redirect('/admin/cars.html');
+});
+
+app.get('/admin/login.html', redirectLoggedAdmin, (req, res) => {
+  res.sendFile(path.join(adminPagesPath, 'login.html'));
+});
+
+app.get('/admin/cars.html', requireAdminPage, (req, res) => {
+  res.sendFile(path.join(adminPagesPath, 'cars.html'));
+});
+
+app.get('/admin/car-edit.html', requireAdminPage, (req, res) => {
+  res.sendFile(path.join(adminPagesPath, 'car-edit.html'));
+});
+
+app.get('/admin/leads.html', requireAdminPage, (req, res) => {
+  res.sendFile(path.join(adminPagesPath, 'leads.html'));
+});
+
+app.use('/site', express.static(path.join(__dirname, 'site')));
+app.use('/admin', express.static(path.join(__dirname, 'admin')));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
+app.get('/catalog.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'catalog.html'));
+});
+
+app.get('/cars/:slug', (req, res) => {
+  res.sendFile(path.join(__dirname, 'car.html'));
+});
+
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'index.html'));
+});
 
 const requiredEnv = [
   'SMTP_HOST',
@@ -353,7 +412,7 @@ Email: ${email}
 });
 
 app.use((req, res) => {
-  res.sendFile(path.join(__dirname, 'index.html'));
+  res.status(404).sendFile(path.join(__dirname, 'index.html'));
 });
 
 transporter.verify((error) => {

@@ -47,7 +47,7 @@ async function loadCars() {
       throw new Error(data.message || 'Ошибка загрузки каталога');
     }
 
-    cars = data.cars || [];
+    cars = Array.isArray(data.cars) ? data.cars : [];
 
     const catalogHeroCount = document.getElementById('catalogHeroCount');
 
@@ -58,52 +58,78 @@ async function loadCars() {
     renderCars(cars);
   } catch (error) {
     console.error('Catalog load error:', error);
-    catalogGrid.innerHTML =
-      '<div class="catalog-empty">Не удалось загрузить каталог. Попробуйте позже.</div>';
+
+    catalogGrid.innerHTML = `
+      <div class="catalog-empty">
+        Не удалось загрузить каталог. Попробуйте позже.
+      </div>
+    `;
   }
 }
 
 function renderCars(items) {
+  if (!catalogGrid) return;
+
   if (!items.length) {
-    catalogGrid.innerHTML =
-      '<div class="catalog-empty">Автомобили скоро появятся в каталоге.</div>';
+    catalogGrid.innerHTML = `
+      <div class="catalog-empty">
+        Автомобили скоро появятся в каталоге.
+      </div>
+    `;
     return;
   }
 
   catalogGrid.innerHTML = items.map(createCarCard).join('');
 
-  document.querySelectorAll('.cars-card').forEach((card) => {
-    card.addEventListener('click', () => openCarModal(card.dataset));
+  document.querySelectorAll('.cars-card[data-url]').forEach((card) => {
+    card.addEventListener('click', (event) => {
+      const interactiveElement = event.target.closest('a, button');
+
+      if (interactiveElement) return;
+
+      window.location.href = card.dataset.url;
+    });
 
     card.addEventListener('keydown', (event) => {
       if (event.key === 'Enter') {
-        openCarModal(card.dataset);
+        window.location.href = card.dataset.url;
       }
     });
   });
 }
 
 function createCarCard(car) {
-  const image = car.previewImage || car.image || '/site/img/logoIcon.png';
+  const image = car.previewImage || car.mainImage || car.image || '/site/img/logoIcon.png';
   const title = car.title || 'Автомобиль';
+  const slug = car.slug || '';
+  const carUrl = slug ? `/cars/${encodeURIComponent(slug)}` : '/catalog.html';
+
+  const meta = [
+    car.year,
+    car.mileage,
+    car.engine,
+    car.drive,
+    car.gearbox,
+  ]
+    .filter(Boolean)
+    .join(' • ');
+
+  const tags = [
+    car.gearbox,
+    car.drive,
+    car.country,
+    car.city,
+    car.availability,
+  ]
+    .filter(Boolean)
+    .slice(0, 5);
 
   return `
     <article
       class="cars-card"
       role="listitem"
       tabindex="0"
-      data-title="${escapeHtml(title)}"
-      data-price="${escapeHtml(car.price || 'Цена уточняется')}"
-      data-badge="${escapeHtml(car.badge || 'Под заказ')}"
-      data-grade="${escapeHtml(car.grade || '—')}"
-      data-year="${escapeHtml(car.year || '—')}"
-      data-engine="${escapeHtml(car.engine || '—')}"
-      data-mileage="${escapeHtml(car.mileage || '—')}"
-      data-drive="${escapeHtml(car.drive || '—')}"
-      data-gearbox="${escapeHtml(car.gearbox || '—')}"
-      data-complectation="${escapeHtml(car.complectation || '—')}"
-      data-auction="${escapeHtml(car.auctionUrl || '#')}"
-      data-image="${escapeHtml(car.image || image)}"
+      data-url="${escapeHtml(carUrl)}"
     >
       <div class="cars-card__image">
         <img
@@ -114,59 +140,81 @@ function createCarCard(car) {
         >
 
         <span class="cars-card__badge">
-          ${escapeHtml(car.badge || 'Под заказ')}
+          ${escapeHtml(car.badge || car.availability || 'Под заказ')}
         </span>
 
-        <span class="cars-card__grade">
-          ${escapeHtml(car.grade || '—')}
-        </span>
+        ${
+          car.grade
+            ? `
+              <span class="cars-card__grade">
+                ${escapeHtml(car.grade)}
+              </span>
+            `
+            : ''
+        }
       </div>
 
       <div class="cars-card__content">
-        <div class="cars-card__head">
-          <h3 class="cars-card__title">${escapeHtml(title)}</h3>
-          <p class="cars-card__complectation">
-            ${escapeHtml(car.complectation || 'Комплектация уточняется')}
-          </p>
-        </div>
+        <h3 class="cars-card__title">
+          ${escapeHtml(title)}
+        </h3>
 
-        <div class="cars-card__specs">
-          <div>
-            <span>Год</span>
-            <strong>${escapeHtml(car.year || '—')}</strong>
-          </div>
+        ${
+          meta
+            ? `
+              <div class="cars-card__meta">
+                ${meta
+                  .split(' • ')
+                  .map((item) => {
+                    return `
+                      <div class="cars-card__meta-item">
+                        <span class="cars-card__dot" aria-hidden="true"></span>
+                        <span>${escapeHtml(item)}</span>
+                      </div>
+                    `;
+                  })
+                  .join('')}
+              </div>
+            `
+            : ''
+        }
 
-          <div>
-            <span>Пробег</span>
-            <strong>${escapeHtml(car.mileage || '—')}</strong>
-          </div>
+        ${
+          tags.length
+            ? `
+              <div class="cars-card__tags">
+                ${tags
+                  .map((tag) => {
+                    return `<span>${escapeHtml(tag)}</span>`;
+                  })
+                  .join('')}
+              </div>
+            `
+            : ''
+        }
 
-          <div>
-            <span>Двигатель</span>
-            <strong>${escapeHtml(car.engine || '—')}</strong>
-          </div>
-
-          <div>
-            <span>Привод</span>
-            <strong>${escapeHtml(car.drive || '—')}</strong>
-          </div>
-        </div>
+        ${
+          car.shortDescription
+            ? `
+              <p class="cars-card__description">
+                ${escapeHtml(car.shortDescription)}
+              </p>
+            `
+            : ''
+        }
 
         <div class="cars-card__bottom">
-          <div>
-            <span class="cars-card__price-label">Стоимость под ключ</span>
-            <div class="cars-card__price">
-              ${escapeHtml(car.price || 'Цена уточняется')}
-            </div>
+          <div class="cars-card__price">
+            ${escapeHtml(car.price || 'Цена уточняется')}
           </div>
 
-          <button
-            type="button"
+          <a
             class="cars-card__arrow"
+            href="${escapeHtml(carUrl)}"
             aria-label="Подробнее об автомобиле ${escapeHtml(title)}"
           >
             ›
-          </button>
+          </a>
         </div>
       </div>
     </article>
@@ -179,13 +227,24 @@ catalogSearch?.addEventListener('input', () => {
   const filteredCars = cars.filter((car) => {
     const searchable = [
       car.title,
+      car.brand,
+      car.model,
       car.year,
       car.engine,
+      car.power,
+      car.fuel,
+      car.mileage,
       car.drive,
       car.gearbox,
+      car.body,
+      car.color,
       car.complectation,
+      car.country,
+      car.city,
       car.badge,
-      car.price
+      car.availability,
+      car.price,
+      car.shortDescription,
     ]
       .filter(Boolean)
       .join(' ')
@@ -197,69 +256,11 @@ catalogSearch?.addEventListener('input', () => {
   renderCars(filteredCars);
 });
 
-function openCarModal(car) {
-  const modal = document.getElementById('carsModal');
-  if (!modal) return;
-
-  setText('carsModalTitle', car.title || 'Автомобиль');
-  setText('carsModalPrice', car.price || 'Цена уточняется');
-  setText('carsModalBadge', car.badge || 'Под заказ');
-  setText('carsModalGrade', car.grade || '—');
-  setText('carsModalComplectation', car.complectation || '—');
-  setText('carsModalYear', car.year || '—');
-  setText('carsModalEngine', car.engine || '—');
-  setText('carsModalMileage', car.mileage || '—');
-  setText('carsModalDrive', car.drive || '—');
-  setText('carsModalGearbox', car.gearbox || '—');
-
-  const photo = document.getElementById('carsModalPhoto');
-  if (photo) {
-    photo.src = car.image || '/site/img/logoIcon.png';
-    photo.alt = car.title || 'Автомобиль';
-  }
-
-  const auction = document.getElementById('carsModalAuction');
-  if (auction) {
-    auction.href = car.auction || '#';
-    auction.style.display =
-      car.auction && car.auction !== '#' ? 'inline-flex' : 'none';
-  }
-
-  modal.classList.add('active');
-  modal.setAttribute('aria-hidden', 'false');
-  document.body.style.overflow = 'hidden';
-}
-
-function closeCarModal() {
-  const modal = document.getElementById('carsModal');
-  if (!modal) return;
-
-  modal.classList.remove('active');
-  modal.setAttribute('aria-hidden', 'true');
-  document.body.style.overflow = '';
-}
-
-document
-  .querySelector('.cars-card__modal-close')
-  ?.addEventListener('click', closeCarModal);
-document
-  .querySelector('.cars-card__modal-overlay')
-  ?.addEventListener('click', closeCarModal);
-
-document.addEventListener('keydown', (event) => {
-  if (event.key === 'Escape') closeCarModal();
-});
-
-function setText(id, value) {
-  const element = document.getElementById(id);
-  if (element) element.textContent = value;
-}
-
 function escapeHtml(value) {
   return String(value || '')
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#039;');
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&#039;');
 }

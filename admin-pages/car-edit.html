@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Автомобиль | ShumDev CMS</title>
+
+    <link rel="stylesheet" href="/admin/css/admin.css" />
+  </head>
+
+  <body class="admin-body" data-admin-page="car-edit">
+    <div class="admin-shell">
+      <aside class="admin-sidebar">
+        <div class="admin-sidebar__brand">
+          <span>ShumDev CMS</span>
+          <strong>AutoZavoz</strong>
+        </div>
+
+        <nav class="admin-sidebar__nav">
+          <a href="/admin/cars.html" data-admin-nav>Автомобили</a>
+          <a href="/admin/leads.html" data-admin-nav>Заявки</a>
+        </nav>
+
+        <button class="admin-sidebar__logout" type="button" data-admin-logout>
+          Выйти
+        </button>
+      </aside>
+
+      <main class="admin-main">
+        <header class="admin-topbar">
+          <div>
+            <p class="admin-topbar__eyebrow">Каталог</p>
+            <h1 class="admin-topbar__title" id="carEditTitle">
+              Новый автомобиль
+            </h1>
+          </div>
+
+          <a class="admin-button admin-button--ghost" href="/admin/cars.html">
+            Назад
+          </a>
+        </header>
+
+        <section class="admin-panel">
+          <p>Форма автомобиля будет здесь.</p>
+        </section>
+      </main>
+    </div>
+
+    <script src="/admin/js/admin.js"></script>
+    <script src="/admin/js/car-edit.js"></script>
+  </body>
+</html>
