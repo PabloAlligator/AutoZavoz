@@ -88,7 +88,11 @@
 
                 <label class="admin-field">
                   <span>Старая цена</span>
-                  <input type="text" name="oldPrice" placeholder="13 500 000 ₽" />
+                  <input
+                    type="text"
+                    name="oldPrice"
+                    placeholder="13 500 000 ₽"
+                  />
                 </label>
 
                 <label class="admin-field">
@@ -102,7 +106,11 @@
 
                 <label class="admin-field">
                   <span>Наличие</span>
-                  <input type="text" name="availability" placeholder="В наличии" />
+                  <input
+                    type="text"
+                    name="availability"
+                    placeholder="В наличии"
+                  />
                 </label>
 
                 <label class="admin-field">
@@ -158,12 +166,20 @@
 
                 <label class="admin-field">
                   <span>Кузов</span>
-                  <input type="text" name="body" placeholder="Внедорожник 5 дв." />
+                  <input
+                    type="text"
+                    name="body"
+                    placeholder="Внедорожник 5 дв."
+                  />
                 </label>
 
                 <label class="admin-field">
                   <span>Цвет</span>
-                  <input type="text" name="color" placeholder="Чёрный металлик" />
+                  <input
+                    type="text"
+                    name="color"
+                    placeholder="Чёрный металлик"
+                  />
                 </label>
 
                 <label class="admin-field">
@@ -262,10 +278,16 @@
                     />
 
                     <span class="admin-upload__button">Выбрать превью</span>
-                    <small id="previewImageName">JPG, PNG или WEBP до 5 МБ</small>
+                    <small id="previewImageName"
+                      >JPG, PNG или WEBP до 5 МБ</small
+                    >
                   </label>
 
-                  <div class="admin-image-preview" id="previewImagePreview" hidden>
+                  <div
+                    class="admin-image-preview"
+                    id="previewImagePreview"
+                    hidden
+                  >
                     <img src="" alt="Превью авто" />
                   </div>
                 </div>
@@ -301,7 +323,9 @@
                       accept="image/jpeg,image/png,image/webp"
                     />
 
-                    <span class="admin-upload__button">Выбрать главное фото</span>
+                    <span class="admin-upload__button"
+                      >Выбрать главное фото</span
+                    >
                     <small id="mainImageName">JPG, PNG или WEBP до 5 МБ</small>
                   </label>
 
@@ -327,6 +351,20 @@
                       Можно выбрать несколько фото
                     </small>
                   </label>
+                  <div
+                    class="admin-gallery-existing"
+                    id="existingGallery"
+                    hidden
+                  >
+                    <p class="admin-gallery-existing__title">
+                      Загруженные фото
+                    </p>
+
+                    <div
+                      class="admin-gallery-existing__grid"
+                      id="existingGalleryGrid"
+                    ></div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -381,7 +419,10 @@
             </div>
 
             <div class="admin-form__actions">
-              <a class="admin-button admin-button--ghost" href="/admin/cars.html">
+              <a
+                class="admin-button admin-button--ghost"
+                href="/admin/cars.html"
+              >
                 Отмена
               </a>
 

@@ -186,7 +186,17 @@ async function optimizeImage(file, options = {}) {
     .toFile(outputPath);
 
   if (fs.existsSync(file.path)) {
-    fs.unlinkSync(file.path);
+    try {
+      fs.unlinkSync(file.path);
+    } catch (error) {
+      if (
+        error.code !== 'ENOENT' &&
+        error.code !== 'EBUSY' &&
+        error.code !== 'EPERM'
+      ) {
+        console.warn('Не удалось удалить временный файл:', file.path);
+      }
+    }
   }
 
   return `/uploads/cars/${outputFilename}`;
@@ -200,8 +210,20 @@ function deleteUploadFile(filePath) {
   const normalizedPath = filePath.replace(/^\//, '');
   const fullPath = path.join(process.cwd(), normalizedPath);
 
-  if (fs.existsSync(fullPath)) {
+  if (!fs.existsSync(fullPath)) {
+    return;
+  }
+
+  try {
     fs.unlinkSync(fullPath);
+  } catch (error) {
+    if (
+      error.code !== 'ENOENT' &&
+      error.code !== 'EBUSY' &&
+      error.code !== 'EPERM'
+    ) {
+      console.warn('Не удалось удалить файл:', fullPath);
+    }
   }
 }
 
@@ -442,11 +464,7 @@ router.post(
         car: createdCar,
       });
     } catch (error) {
-      return handlePrismaError(
-        error,
-        res,
-        'Ошибка создания автомобиля',
-      );
+      return handlePrismaError(error, res, 'Ошибка создания автомобиля');
     }
   },
 );
@@ -520,11 +538,7 @@ router.put(
         car: updatedCar,
       });
     } catch (error) {
-      return handlePrismaError(
-        error,
-        res,
-        'Ошибка обновления автомобиля',
-      );
+      return handlePrismaError(error, res, 'Ошибка обновления автомобиля');
     }
   },
 );
@@ -575,6 +589,63 @@ router.patch('/admin/cars/:id/status', requireAdminAuth, async (req, res) => {
     });
   }
 });
+
+router.delete(
+  '/admin/cars/:carId/images/:imageId',
+  requireAdminAuth,
+  async (req, res) => {
+    try {
+      const carId = Number(req.params.carId);
+      const imageId = Number(req.params.imageId);
+
+      if (
+        !Number.isInteger(carId) ||
+        carId <= 0 ||
+        !Number.isInteger(imageId) ||
+        imageId <= 0
+      ) {
+        return res.status(400).json({
+          success: false,
+          message: 'Некорректный ID фотографии',
+        });
+      }
+
+      const image = await prisma.carImage.findFirst({
+        where: {
+          id: imageId,
+          carId,
+        },
+      });
+
+      if (!image) {
+        return res.status(404).json({
+          success: false,
+          message: 'Фотография не найдена',
+        });
+      }
+
+      deleteUploadFile(image.image);
+
+      await prisma.carImage.delete({
+        where: {
+          id: image.id,
+        },
+      });
+
+      return res.status(200).json({
+        success: true,
+        message: 'Фотография удалена',
+      });
+    } catch (error) {
+      console.error('Delete car image error:', error);
+
+      return res.status(500).json({
+        success: false,
+        message: 'Ошибка удаления фотографии',
+      });
+    }
+  },
+);
 
 router.delete('/admin/cars/:id', requireAdminAuth, async (req, res) => {
   try {

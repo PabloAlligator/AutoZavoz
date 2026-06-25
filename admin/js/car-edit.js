@@ -3,6 +3,8 @@ document.addEventListener('DOMContentLoaded', initCarEditPage);
 const carForm = document.querySelector('#carForm');
 const carEditTitle = document.querySelector('#carEditTitle');
 const submitButton = document.querySelector('#carSubmitButton');
+const existingGallery = document.querySelector('#existingGallery');
+const existingGalleryGrid = document.querySelector('#existingGalleryGrid');
 
 let currentCarId = null;
 let slugTouched = false;
@@ -13,7 +15,11 @@ async function initCarEditPage() {
   currentCarId = getCarIdFromUrl();
 
   bindSlugGeneration();
-  bindImagePreview('previewImageFile', 'previewImagePreview', 'previewImageName');
+  bindImagePreview(
+    'previewImageFile',
+    'previewImagePreview',
+    'previewImageName',
+  );
   bindImagePreview('imageFile', 'imagePreview', 'imageName');
   bindImagePreview('mainImageFile', 'mainImagePreview', 'mainImageName');
   bindGalleryName();
@@ -98,6 +104,7 @@ function fillForm(car) {
   showExistingImage('previewImagePreview', car.previewImage);
   showExistingImage('imagePreview', car.image);
   showExistingImage('mainImagePreview', car.mainImage || car.image);
+  renderExistingGallery(car.images || []);
 
   slugTouched = true;
 }
@@ -128,6 +135,103 @@ function showExistingImage(previewId, imagePath) {
 
   image.src = imagePath;
   preview.hidden = false;
+}
+
+function renderExistingGallery(images) {
+  if (!existingGallery || !existingGalleryGrid) return;
+
+  existingGallery.hidden = false;
+
+  if (!Array.isArray(images) || !images.length) {
+    existingGalleryGrid.innerHTML = `
+      <p class="admin-gallery-existing__empty">
+        У этого автомобиля пока нет фото в галерее.
+      </p>
+    `;
+    return;
+  }
+
+  existingGalleryGrid.innerHTML = images
+    .map(
+      (image) => `
+        <div class="admin-gallery-card" data-gallery-image-card="${image.id}">
+          <img
+            src="${escapeHtml(image.image)}"
+            alt="${escapeHtml(image.alt || 'Фото автомобиля')}"
+            loading="lazy"
+          />
+
+          <button
+            type="button"
+            class="admin-gallery-card__delete"
+            data-delete-gallery-image="${image.id}"
+            aria-label="Удалить фото"
+          >
+            ×
+          </button>
+        </div>
+      `,
+    )
+    .join('');
+
+  existingGalleryGrid
+    .querySelectorAll('[data-delete-gallery-image]')
+    .forEach((button) => {
+      button.addEventListener('click', () => {
+        deleteGalleryImage(Number(button.dataset.deleteGalleryImage), button);
+      });
+    });
+}
+
+async function deleteGalleryImage(imageId, button) {
+  if (!currentCarId || !imageId) return;
+
+  const confirmed = confirm('Удалить эту фотографию?');
+
+  if (!confirmed) return;
+
+  try {
+    button.disabled = true;
+
+    const data = await Admin.request(
+      `/api/admin/cars/${currentCarId}/images/${imageId}`,
+      {
+        method: 'DELETE',
+      },
+    );
+
+    if (!data || !data.success) {
+      throw new Error(data?.message || 'Не удалось удалить фотографию');
+    }
+
+    const card = button.closest('[data-gallery-image-card]');
+    card?.remove();
+
+    if (
+      existingGalleryGrid &&
+      !existingGalleryGrid.querySelector('[data-gallery-image-card]')
+    ) {
+      existingGalleryGrid.innerHTML = `
+        <p class="admin-gallery-existing__empty">
+          Все фото галереи удалены.
+        </p>
+      `;
+    }
+  } catch (error) {
+    console.error('Gallery image delete error:', error);
+    alert(error.message || 'Не удалось удалить фотографию');
+
+    button.disabled = false;
+  }
+}
+
+function escapeHtml(value) {
+  return String(value || '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
 }
 
 function bindSlugGeneration() {
