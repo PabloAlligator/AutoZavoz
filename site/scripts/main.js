@@ -318,31 +318,31 @@ document.addEventListener('DOMContentLoaded', () => {
 const phoneInput = document.querySelector('input[name="phone"]');
 
 if (phoneInput) {
-    phoneInput.addEventListener('input', (e) => {
-        let value = e.target.value.replace(/\D/g, '');
+  phoneInput.addEventListener('input', (e) => {
+    let value = e.target.value.replace(/\D/g, '');
 
-        if (value === '') {
-            e.target.value = '';
-            return;
-        }
+    if (value === '') {
+      e.target.value = '';
+      return;
+    }
 
-        if (value[0] === '8') {
-            value = '7' + value.slice(1);
-        } else if (value[0] !== '7') {
-            value = '7' + value;
-        }
+    if (value[0] === '8') {
+      value = '7' + value.slice(1);
+    } else if (value[0] !== '7') {
+      value = '7' + value;
+    }
 
-        value = value.slice(0, 11);
+    value = value.slice(0, 11);
 
-        let result = '+7';
+    let result = '+7';
 
-        if (value.length > 1) result += ' (' + value.slice(1, 4);
-        if (value.length >= 5) result += ') ' + value.slice(4, 7);
-        if (value.length >= 8) result += '-' + value.slice(7, 9);
-        if (value.length >= 10) result += '-' + value.slice(9, 11);
+    if (value.length > 1) result += ' (' + value.slice(1, 4);
+    if (value.length >= 5) result += ') ' + value.slice(4, 7);
+    if (value.length >= 8) result += '-' + value.slice(7, 9);
+    if (value.length >= 10) result += '-' + value.slice(9, 11);
 
-        e.target.value = result;
-    });
+    e.target.value = result;
+  });
 }
 
 //  форма
@@ -412,20 +412,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (isSubmitting) return;
 
+    const nameInput = form.querySelector('input[name="name"]');
     const phoneInput = form.querySelector('input[name="phone"]');
     const emailInput = form.querySelector('input[name="email"]');
     const carInput = form.querySelector('input[name="car"]');
     const commentInput = form.querySelector('textarea[name="comment"]');
     const companyInput = form.querySelector('input[name="company"]');
 
+    const name = nameInput?.value.trim() || '';
     const phone = phoneInput?.value.trim() || '';
     const email = emailInput?.value.trim() || '';
     const car = carInput?.value.trim() || '';
     const comment = commentInput?.value.trim() || '';
     const company = companyInput?.value.trim() || '';
 
-    if (!phone || !email) {
-      showNotice('error', 'Ошибка формы', 'Заполните телефон и email.');
+    if (!name || !phone || !email) {
+      showNotice('error', 'Ошибка формы', 'Заполните имя, телефон и email.');
       return;
     }
 
@@ -441,6 +443,7 @@ document.addEventListener('DOMContentLoaded', () => {
           Accept: 'application/json',
         },
         body: JSON.stringify({
+          name,
           phone,
           email,
           car,
@@ -549,10 +552,7 @@ async function loadHomeCars() {
 
 function createHomeCarCard(car) {
   const image =
-    car.previewImage ||
-    car.mainImage ||
-    car.image ||
-    '/site/img/logoIcon.png';
+    car.previewImage || car.mainImage || car.image || '/site/img/logoIcon.png';
 
   const title = car.title || 'Автомобиль';
   const slug = car.slug || '';
