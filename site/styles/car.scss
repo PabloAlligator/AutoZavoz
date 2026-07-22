@@ -15,6 +15,30 @@ $border-main: rgba(255, 255, 255, 0.1);
 $border-soft: rgba(255, 255, 255, 0.08);
 $border-orange: rgba(255, 106, 0, 0.28);
 
+// Скроллбар
+html {
+  scrollbar-color: $orange-main $black-soft;
+  scrollbar-width: thin;
+}
+
+body::-webkit-scrollbar {
+  width: 12px;
+}
+
+body::-webkit-scrollbar-track {
+  background: $black-soft;
+}
+
+body::-webkit-scrollbar-thumb {
+  background: $orange-main;
+  border: 3px solid $black-soft;
+  border-radius: 999px;
+}
+
+body::-webkit-scrollbar-thumb:hover {
+  background: $orange-light;
+}
+
 body.car-page {
   margin: 0;
   background: $black-main;

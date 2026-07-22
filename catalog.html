@@ -13,12 +13,80 @@
     <meta name="robots" content="index, follow, max-image-preview:large" />
     <link rel="canonical" href="https://avtozavoz19.ru/catalog.html" />
 
+    <meta property="og:locale" content="ru_RU" />
+    <meta property="og:type" content="website" />
+    <meta
+      property="og:title"
+      content="Каталог автомобилей под заказ — АвтоZавоз"
+    />
+    <meta
+      property="og:description"
+      content="Автомобили из Японии, Кореи и Китая с предварительным расчётом доставки, таможенных платежей и оформления."
+    />
+    <meta property="og:url" content="https://avtozavoz19.ru/catalog.html" />
+    <meta property="og:site_name" content="АвтоZавоз" />
+    <meta
+      property="og:image"
+      content="https://avtozavoz19.ru/site/img/Logo.png"
+    />
+
     <meta name="theme-color" content="#0f0f12" />
     <meta name="format-detection" content="telephone=no" />
 
     <link rel="icon" type="image/png" href="/site/img/logoIcon.png" />
     <link rel="apple-touch-icon" href="/site/img/logoIcon.png" />
     <link rel="stylesheet" href="/site/css/catalog.css" />
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "CollectionPage",
+            "@id": "https://avtozavoz19.ru/catalog.html#page",
+            "url": "https://avtozavoz19.ru/catalog.html",
+            "name": "Каталог автомобилей под заказ в Абакане",
+            "description": "Каталог автомобилей из Японии, Кореи и Китая с подбором, доставкой, таможенным оформлением, СБКТС и ЭПТС.",
+            "inLanguage": "ru-RU",
+            "about": { "@id": "https://avtozavoz19.ru/#organization" },
+            "breadcrumb": {
+              "@id": "https://avtozavoz19.ru/catalog.html#breadcrumbs"
+            }
+          },
+          {
+            "@type": "BreadcrumbList",
+            "@id": "https://avtozavoz19.ru/catalog.html#breadcrumbs",
+            "itemListElement": [
+              {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Главная",
+                "item": "https://avtozavoz19.ru/"
+              },
+              {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "Каталог автомобилей",
+                "item": "https://avtozavoz19.ru/catalog.html"
+              }
+            ]
+          },
+          {
+            "@type": "Service",
+            "@id": "https://avtozavoz19.ru/catalog.html#service",
+            "name": "Подбор и доставка автомобиля под заказ в Абакан",
+            "serviceType": "Подбор, организация покупки, доставки и оформления автомобиля",
+            "provider": { "@id": "https://avtozavoz19.ru/#organization" },
+            "areaServed": ["Абакан", "Республика Хакасия", "Россия"],
+            "availableChannel": {
+              "@type": "ServiceChannel",
+              "serviceUrl": "https://avtozavoz19.ru/#form",
+              "servicePhone": "+7-933-994-30-70"
+            }
+          }
+        ]
+      }
+    </script>
   </head>
 
   <body class="catalog-page">
@@ -80,8 +148,8 @@
               </h1>
 
               <p class="catalog-hero__text">
-                Каталог автомобилей из Японии, Кореи, ОАЭ и Китая. Подберём вариант
-                под ваш бюджет, проверим историю, организуем доставку,
+                Каталог автомобилей из Японии, Кореи, ОАЭ и Китая. Подберём
+                вариант под ваш бюджет, проверим историю, организуем доставку,
                 растаможку и оформление документов.
               </p>
 
@@ -129,6 +197,13 @@
               <p>
                 Актуальные модели, которые можно заказать с полным
                 сопровождением: подбор, покупка, доставка, таможня и документы.
+              </p>
+
+              <p id="catalog-legal-note">
+                Цены и сроки в каталоге являются предварительными. Итоговая
+                стоимость, состав расходов, характеристики и срок поставки
+                фиксируются в индивидуальном договоре. Отправка заявки не
+                является заказом автомобиля.
               </p>
 
               <div class="catalog-search">
@@ -195,6 +270,7 @@
               id="catalogGrid"
               role="list"
               aria-label="Каталог автомобилей"
+              aria-describedby="catalog-legal-note"
             >
               <div class="catalog-loading">Загружаем автомобили...</div>
             </div>
@@ -279,18 +355,26 @@
             <li><a href="#form">Получить расчёт</a></li>
             <li>
               <a
+                href="site/privacy-policy.html"
+                target="_blank"
+                class="footer-link"
+                >Политика обработки данных</a
+              >
+            </li>
+            <li>
+              <a href="/site/consent-personal-data.html" target="_blank"
+                >Согласие на обработку данных</a
+              >
+            </li>
+            <li>
+              <a href="/site/legal-information.html">Юридическая информация</a>
+            </li>
+            <li>
+              <a
                 href="https://shumdev.ru/"
                 target="_blank"
                 rel="noopener noreferrer"
                 >Разработка и дизайн сайта ShumDev</a
-              >
-            </li>
-            <li>
-              <a
-                href="site/privacy-policy.html"
-                target="_blank"
-                class="footer-link"
-                >Политика конфиденциальности</a
               >
             </li>
           </ul>
@@ -332,6 +416,15 @@
           <div class="footer__contact-item">
             <span>АДРЕС</span>
             <p>г. Абакан, ул. Аскизская, 198 Б</p>
+          </div>
+
+          <div class="footer__contact-item">
+            <span>РЕКВИЗИТЫ</span>
+            <p>
+              ИП Дурманенко Андрей Анатольевич<br />
+              ИНН 190116599760<br />
+              ОГРНИП 326190000017777
+            </p>
           </div>
         </address>
       </div>

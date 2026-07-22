@@ -86,14 +86,84 @@
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
-        "@type": "AutoDealer",
-        "name": "АвтоZавоз",
-        "url": "https://avtozavoz19.ru/",
-        "logo": "https://avtozavoz19.ru/site/img/logo.png",
-        "image": "https://avtozavoz19.ru/site/img/logo.png",
-        "description": "Авто из Японии, Кореи и Китая под заказ. Подбор, доставка, покупка и растаможка под ключ.",
-        "areaServed": "Россия",
-        "priceRange": "₽₽"
+        "@graph": [
+          {
+            "@type": ["AutoDealer", "LocalBusiness"],
+            "@id": "https://avtozavoz19.ru/#organization",
+            "name": "АвтоZавоз",
+            "legalName": "Индивидуальный предприниматель Дурманенко Андрей Анатольевич",
+            "identifier": [
+              { "@type": "PropertyValue", "name": "ИНН", "value": "190116599760" },
+              { "@type": "PropertyValue", "name": "ОГРНИП", "value": "326190000017777" }
+            ],
+            "url": "https://avtozavoz19.ru/",
+            "logo": "https://avtozavoz19.ru/site/img/Logo.png",
+            "image": "https://avtozavoz19.ru/site/img/Logo.png",
+            "description": "Подбор и организация доставки автомобилей из Японии, Кореи и Китая в Абакан с сопровождением покупки, таможенного оформления, СБКТС и ЭПТС.",
+            "telephone": ["+7-933-994-30-70", "+7-961-740-80-40"],
+            "email": "avto.zavoz@yandex.com",
+            "address": {
+              "@type": "PostalAddress",
+              "streetAddress": "ул. Аскизская, 198Б",
+              "addressLocality": "Абакан",
+              "addressRegion": "Республика Хакасия",
+              "postalCode": "655009",
+              "addressCountry": "RU"
+            },
+            "areaServed": ["Абакан", "Республика Хакасия", "Россия"],
+            "sameAs": [
+              "https://vk.ru/autozavoz19",
+              "https://t.me/AutoZavoz"
+            ],
+            "priceRange": "₽₽"
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://avtozavoz19.ru/#website",
+            "url": "https://avtozavoz19.ru/",
+            "name": "АвтоZавоз",
+            "inLanguage": "ru-RU",
+            "publisher": { "@id": "https://avtozavoz19.ru/#organization" }
+          },
+          {
+            "@type": "FAQPage",
+            "@id": "https://avtozavoz19.ru/#faq-schema",
+            "mainEntity": [
+              {
+                "@type": "Question",
+                "name": "Как происходит оплата автомобиля под заказ?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Оплата производится поэтапно после согласования автомобиля и подписания индивидуального договора. Состав, назначение и сроки каждого платежа фиксируются в договоре и расчёте стоимости."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Сколько занимает доставка автомобиля в Абакан?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Ориентировочный срок доставки составляет от 2 до 6 недель и зависит от страны покупки, маршрута, перевозчика и таможенного оформления. Точный срок согласовывается для конкретного автомобиля."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Что входит в предварительный расчёт стоимости?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "В расчёте отдельно указываются стоимость автомобиля, доставка, таможенные и обязательные платежи, оформление документов и вознаграждение исполнителя. Итоговые условия фиксируются в индивидуальном договоре."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Кто оказывает услуги АвтоZавоз?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Услуги оказывает ИП Дурманенко Андрей Анатольевич, ИНН 190116599760, ОГРНИП 326190000017777. Офис находится в Абакане по адресу: ул. Аскизская, 198Б."
+                }
+              }
+            ]
+          }
+        ]
       }
     </script>
   </head>
@@ -259,11 +329,11 @@
         <div class="section-two__item" role="listitem">
           <img
             src="site/img/sheep.png"
-            alt="Прямые поставки автомобилей без посредников"
+            alt="Организация прямых поставок автомобилей"
             loading="lazy"
           />
           <h3>Прямые поставки</h3>
-          <p>Работаем без посредников. Честная цена и прозрачная комиссия.</p>
+          <p>Организуем поставку и заранее раскрываем состав расходов и размер комиссии.</p>
         </div>
 
         <div class="section-two__item" role="listitem">
@@ -284,8 +354,8 @@
           />
           <h3>Бесплатный расчет стоимости автомобиля</h3>
           <p>
-            Мы заранее рассчитываем полную стоимость автомобиля под ключ — с
-            учётом покупки, доставки, растаможки и всех сопутствующих расходов.
+            Мы заранее готовим предварительный расчёт стоимости автомобиля — с
+            учётом покупки, доставки, растаможки и сопутствующих расходов.
           </p>
         </div>
 
@@ -296,7 +366,10 @@
             loading="lazy"
           />
           <h3>Помощь покупки автомобиля в кредит</h3>
-          <p>Работаем без посредников. Честная цена и прозрачная комиссия.</p>
+          <p>
+            Помогаем сориентироваться в доступных программах. Решение и условия
+            кредитования определяет выбранная кредитная организация.
+          </p>
         </div>
       </div>
     </section>
@@ -985,10 +1058,9 @@
               aria-labelledby="faq-question-1"
             >
               <div class="faq__answer-content">
-                Оплата происходит поэтапно. Сначала согласовываем автомобиль и
-                условия покупки, затем вносится предоплата. Остальная сумма
-                оплачивается по мере прохождения этапов: выкуп, доставка,
-                таможенное оформление и выдача автомобиля.
+                Оплата производится поэтапно после согласования автомобиля и
+                подписания индивидуального договора. Состав, назначение и сроки
+                каждого платежа фиксируются в договоре и расчёте стоимости.
               </div>
             </div>
           </div>
@@ -1015,6 +1087,57 @@
                 Предоставляем полную информацию по автомобилю, фото и
                 видеоотчёты, документы по покупке, доставке и таможенному
                 оформлению.
+              </div>
+            </div>
+          </div>
+
+          <div class="faq__item" role="listitem">
+            <button
+              class="faq__question"
+              type="button"
+              aria-expanded="false"
+              aria-controls="faq-answer-6"
+              id="faq-question-6"
+            >
+              <span>Что входит в предварительный расчёт стоимости?</span>
+              <span class="faq__icon" aria-hidden="true"></span>
+            </button>
+            <div
+              class="faq__answer"
+              id="faq-answer-6"
+              role="region"
+              aria-labelledby="faq-question-6"
+            >
+              <div class="faq__answer-content">
+                В расчёте отдельно указываются стоимость автомобиля, доставка,
+                таможенные и обязательные платежи, оформление документов и
+                вознаграждение исполнителя. Итоговые условия фиксируются в
+                индивидуальном договоре.
+              </div>
+            </div>
+          </div>
+
+          <div class="faq__item" role="listitem">
+            <button
+              class="faq__question"
+              type="button"
+              aria-expanded="false"
+              aria-controls="faq-answer-7"
+              id="faq-question-7"
+            >
+              <span>Кто оказывает услуги АвтоZавоз?</span>
+              <span class="faq__icon" aria-hidden="true"></span>
+            </button>
+            <div
+              class="faq__answer"
+              id="faq-answer-7"
+              role="region"
+              aria-labelledby="faq-question-7"
+            >
+              <div class="faq__answer-content">
+                Услуги оказывает ИП Дурманенко Андрей Анатольевич, ИНН
+                190116599760, ОГРНИП 326190000017777. Офис находится в Абакане
+                по адресу: ул. Аскизская, 198Б.
               </div>
             </div>
           </div>
@@ -1142,7 +1265,6 @@
             id="contactForm"
             action="/api/send"
             method="post"
-            novalidate
           >
             <input type="hidden" name="form_time" id="formTime" />
 
@@ -1213,20 +1335,39 @@
               aria-hidden="true"
             />
 
-            <button type="submit" class="contact-form__btn">
-              ОТПРАВИТЬ ЗАЯВКУ
-            </button>
-
-            <p class="contact-form__policy">
-              Нажимая кнопку «Отправить заявку», вы соглашаетесь с
+            <label class="contact-form__policy">
+              <input
+                type="checkbox"
+                name="privacy_consent"
+                value="accepted"
+                required
+              />
+              Я даю
+              <a
+                href="/site/consent-personal-data.html"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                согласие на обработку персональных данных
+              </a>
+              и подтверждаю, что ознакомлен с
               <a
                 href="/site/privacy-policy.html"
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                политикой конфиденциальности
-              </a>
-              и даете согласие на обработку персональных данных.
+                политикой обработки персональных данных</a
+              >.
+            </label>
+
+            <button type="submit" class="contact-form__btn">
+              ОТПРАВИТЬ ЗАЯВКУ
+            </button>
+
+            <p class="contact-form__policy">
+              Отправка заявки не является заказом автомобиля и не создаёт
+              обязанности произвести оплату. Условия согласовываются в
+              индивидуальном договоре.
             </p>
           </form>
 
@@ -1337,18 +1478,26 @@
             <li><a href="/index.html#form">Получить расчёт</a></li>
             <li>
               <a
+                href="/site/privacy-policy.html"
+                target="_blank"
+                class="footer-link"
+                >Политика обработки данных</a
+              >
+            </li>
+            <li>
+              <a href="/site/consent-personal-data.html" target="_blank"
+                >Согласие на обработку данных</a
+              >
+            </li>
+            <li>
+              <a href="/site/legal-information.html">Юридическая информация</a>
+            </li>
+             <li>
+              <a
                 href="https://shumdev.ru/"
                 target="_blank"
                 rel="noopener noreferrer"
                 >Разработка и дизайн сайта ShumDev</a
-              >
-            </li>
-            <li>
-              <a
-                href="/site/privacy-policy.html"
-                target="_blank"
-                class="footer-link"
-                >Политика конфиденциальности</a
               >
             </li>
           </ul>
@@ -1391,29 +1540,18 @@
             <span>АДРЕС</span>
             <p>г. Абакан, ул. Аскизская, 198 Б</p>
           </div>
+
+          <div class="footer__contact-item">
+            <span>РЕКВИЗИТЫ</span>
+            <p>
+              ИП Дурманенко Андрей Анатольевич<br />
+              ИНН 190116599760<br />
+              ОГРНИП 326190000017777
+            </p>
+          </div>
         </address>
       </div>
     </footer>
-
-    <div class="contact-form-notice" id="formNotice" aria-hidden="true">
-      <div class="contact-form-notice__content">
-        <div class="contact-form-notice__icon">✓</div>
-
-        <div class="contact-form-notice__text">
-          <h4 class="contact-form-notice__title">Успешно</h4>
-          <p class="contact-form-notice__descr">Сообщение</p>
-        </div>
-
-        <!-- <button
-          class="contact-form-notice__close"
-          id="formNoticeClose"
-          type="button"
-          aria-label="Закрыть уведомление"
-        >
-          ×
-        </button> -->
-      </div>
-    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script src="site/scripts/main.js"></script>

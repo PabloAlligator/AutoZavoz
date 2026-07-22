@@ -1,4 +1,27 @@
 @charset "UTF-8";
+html {
+  scrollbar-color: #ff6a00 #090a0d;
+  scrollbar-width: thin;
+}
+
+body::-webkit-scrollbar {
+  width: 12px;
+}
+
+body::-webkit-scrollbar-track {
+  background: #090a0d;
+}
+
+body::-webkit-scrollbar-thumb {
+  background: #ff6a00;
+  border: 3px solid #090a0d;
+  border-radius: 999px;
+}
+
+body::-webkit-scrollbar-thumb:hover {
+  background: #ff8a1c;
+}
+
 body.car-page {
   margin: 0;
   background: #050505;

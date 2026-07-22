@@ -15,9 +15,54 @@
     <meta name="theme-color" content="#0f0f12" />
     <meta name="format-detection" content="telephone=no" />
 
+    <meta property="og:locale" content="ru_RU" />
+    <meta property="og:type" content="product" />
+    <meta property="og:title" content="Автомобиль под заказ — АвтоZавоз" />
+    <meta property="og:description" content="Характеристики и предварительный расчёт автомобиля под заказ с доставкой и оформлением в Абакане." />
+    <meta property="og:site_name" content="АвтоZавоз" />
+    <meta property="og:image" content="https://avtozavoz19.ru/site/img/Logo.png" />
+
     <link rel="icon" type="image/png" href="/site/img/logoIcon.png" />
     <link rel="stylesheet" href="/site/css/main.min.css" />
     <link rel="stylesheet" href="/site/css/car.min.css" />
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebPage",
+            "name": "Автомобиль под заказ — АвтоZавоз",
+            "description": "Карточка автомобиля под заказ с характеристиками и предварительным расчётом стоимости.",
+            "inLanguage": "ru-RU",
+            "isPartOf": { "@id": "https://avtozavoz19.ru/#website" },
+            "about": { "@id": "https://avtozavoz19.ru/#organization" }
+          },
+          {
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Главная",
+                "item": "https://avtozavoz19.ru/"
+              },
+              {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "Каталог",
+                "item": "https://avtozavoz19.ru/catalog.html"
+              },
+              {
+                "@type": "ListItem",
+                "position": 3,
+                "name": "Автомобиль"
+              }
+            ]
+          }
+        ]
+      }
+    </script>
   </head>
 
   <body class="car-page">
@@ -65,6 +110,19 @@
       <section class="car-detail" id="carDetail">
         <div class="car-detail__container">
           <p class="car-detail__loading">Загружаем автомобиль...</p>
+        </div>
+      </section>
+
+      <section class="car-detail" aria-labelledby="car-legal-title">
+        <div class="car-detail__container">
+          <h2 id="car-legal-title">Условия расчёта и заказа</h2>
+          <p>
+            Цена, комплектация, пробег, сроки доставки и иные сведения на этой
+            странице носят предварительный характер. Итоговые характеристики,
+            состав расходов и обязательства сторон фиксируются в индивидуальном
+            договоре. Отправка заявки не является заказом автомобиля и не
+            создаёт обязанности произвести оплату.
+          </p>
         </div>
       </section>
     </main>
@@ -146,22 +204,28 @@
 
             <li>
               <a
-                href="https://shumdev.ru/"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Разработка и дизайн сайта ShumDev
-              </a>
-            </li>
-
-            <li>
-              <a
                 href="/site/privacy-policy.html"
                 target="_blank"
                 rel="noopener noreferrer"
                 class="footer-link"
               >
-                Политика конфиденциальности
+                Политика обработки данных
+              </a>
+            </li>
+            <li>
+              <a href="/site/consent-personal-data.html" target="_blank"
+                rel="noopener noreferrer">Согласие на обработку данных</a>
+            </li>
+            <li>
+              <a href="/site/legal-information.html">Юридическая информация</a>
+            </li>
+            <li>
+              <a
+                href="https://shumdev.ru/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Разработка и дизайн сайта ShumDev
               </a>
             </li>
           </ul>
@@ -206,6 +270,15 @@
           <div class="footer__contact-item">
             <span>АДРЕС</span>
             <p>г. Абакан, ул. Аскизская, 198 Б</p>
+          </div>
+
+          <div class="footer__contact-item">
+            <span>РЕКВИЗИТЫ</span>
+            <p>
+              ИП Дурманенко Андрей Анатольевич<br />
+              ИНН 190116599760<br />
+              ОГРНИП 326190000017777
+            </p>
           </div>
         </address>
       </div>

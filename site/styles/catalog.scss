@@ -77,6 +77,31 @@ body {
   line-height: 1.6;
 }
 
+
+// Скроллбар
+html {
+  scrollbar-color: $orange-main $black-soft;
+  scrollbar-width: thin;
+}
+
+body::-webkit-scrollbar {
+  width: 12px;
+}
+
+body::-webkit-scrollbar-track {
+  background: $black-soft;
+}
+
+body::-webkit-scrollbar-thumb {
+  background: $orange-main;
+  border: 3px solid $black-soft;
+  border-radius: 999px;
+}
+
+body::-webkit-scrollbar-thumb:hover {
+  background: $orange-light;
+}
+
 body.no-scroll {
   overflow: hidden;
   height: 100vh;

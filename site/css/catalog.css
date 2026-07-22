@@ -348,6 +348,29 @@ body {
   line-height: 1.6;
 }
 
+html {
+  scrollbar-color: #ff6a00 #0a0a0a;
+  scrollbar-width: thin;
+}
+
+body::-webkit-scrollbar {
+  width: 12px;
+}
+
+body::-webkit-scrollbar-track {
+  background: #0a0a0a;
+}
+
+body::-webkit-scrollbar-thumb {
+  background: #ff6a00;
+  border: 3px solid #0a0a0a;
+  border-radius: 999px;
+}
+
+body::-webkit-scrollbar-thumb:hover {
+  background: #ff9b3d;
+}
+
 body.no-scroll {
   overflow: hidden;
   height: 100vh;
