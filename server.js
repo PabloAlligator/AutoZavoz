@@ -2,7 +2,7 @@ require('dotenv').config({ quiet: true });
 
 const adminAuthRoutes = require('./src/routes/admin.auth.routes');
 const session = require('express-session');
-const SQLiteStore = require('connect-sqlite3')(session);
+const { PrismaSessionStore } = require('@quixo3/prisma-session-store');
 const express = require('express');
 const nodemailer = require('nodemailer');
 const cors = require('cors');
@@ -44,9 +44,10 @@ app.set('trust proxy', 1);
 
 app.use(
   session({
-    store: new SQLiteStore({
-      db: 'sessions.sqlite',
-      dir: './prisma',
+    store: new PrismaSessionStore(prisma, {
+      checkPeriod: 2 * 60 * 1000,
+      dbRecordIdIsSessionId: true,
+      dbRecordIdFunction: undefined,
     }),
 
     name: 'shumdev_cms_sid',
