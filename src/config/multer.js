@@ -2,6 +2,7 @@ const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
 
+const MAX_IMAGE_SIZE = 15 * 1024 * 1024;
 const uploadPath = path.join(process.cwd(), 'uploads', 'cars');
 
 if (!fs.existsSync(uploadPath)) {
@@ -16,44 +17,25 @@ const storage = multer.diskStorage({
   filename: (req, file, cb) => {
     const ext = path.extname(file.originalname);
 
-    const fileName =
-      Date.now() +
-      '-' +
-      Math.round(Math.random() * 1e9) +
-      ext;
+    const fileName = `${Date.now()}-${Math.round(Math.random() * 1e9)}${ext}`;
 
     cb(null, fileName);
   }
 });
 
 function fileFilter(req, file, cb) {
-  const allowedMimeTypes = [
-    'image/jpeg',
-    'image/png',
-    'image/webp'
-  ];
+  const allowedMimeTypes = ['image/jpeg', 'image/png', 'image/webp'];
 
-  const allowedExtensions = [
-    '.jpg',
-    '.jpeg',
-    '.png',
-    '.webp'
-  ];
+  const allowedExtensions = ['.jpg', '.jpeg', '.png', '.webp'];
 
-  const ext = path
-    .extname(file.originalname)
-    .toLowerCase();
+  const ext = path.extname(file.originalname).toLowerCase();
 
   if (!allowedMimeTypes.includes(file.mimetype)) {
-    return cb(
-      new Error('Разрешены только JPG, PNG и WEBP')
-    );
+    return cb(new Error('Разрешены только JPG, PNG и WEBP'));
   }
 
   if (!allowedExtensions.includes(ext)) {
-    return cb(
-      new Error('Неверный формат файла')
-    );
+    return cb(new Error('Неверный формат файла'));
   }
 
   cb(null, true);
@@ -63,10 +45,10 @@ const upload = multer({
   storage,
 
   limits: {
-    fileSize: 5 * 1024 * 1024
+    fileSize: MAX_IMAGE_SIZE,
   },
 
-  fileFilter
+  fileFilter,
 });
 
 module.exports = upload;

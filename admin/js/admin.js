@@ -48,8 +48,29 @@ const Admin = (() => {
       }
     }
 
-    const response = await fetch(url, config);
-    const data = await response.json().catch(() => ({}));
+    let response;
+
+    try {
+      response = await fetch(url, config);
+    } catch (error) {
+      const requestError = new Error(
+        'Сервер не ответил. Проверьте интернет и попробуйте ещё раз.',
+      );
+
+      requestError.cause = error;
+      throw requestError;
+    }
+
+    const responseText = await response.text();
+    let data = {};
+
+    if (responseText) {
+      try {
+        data = JSON.parse(responseText);
+      } catch (error) {
+        data = {};
+      }
+    }
 
     if (response.status === 401) {
       redirectToLogin();
@@ -57,7 +78,25 @@ const Admin = (() => {
     }
 
     if (!response.ok) {
-      throw new Error(data.message || 'Ошибка запроса');
+      const fallbackMessages = {
+        413: 'Фотографии слишком большие для загрузки.',
+        429: 'Слишком много запросов. Подождите минуту и повторите.',
+        502: 'Сервер временно недоступен. Попробуйте ещё раз.',
+        503: 'Сервер временно недоступен. Попробуйте ещё раз.',
+        504: 'Обработка фотографий заняла слишком много времени.',
+      };
+
+      const requestError = new Error(
+        data.message ||
+          fallbackMessages[response.status] ||
+          `Не удалось выполнить запрос (ошибка ${response.status})`,
+      );
+
+      requestError.status = response.status;
+      requestError.code = data.code || null;
+      requestError.errors = data.errors || null;
+
+      throw requestError;
     }
 
     return data;

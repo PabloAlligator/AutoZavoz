@@ -161,7 +161,11 @@ app.use(express.json({ limit: '50kb' }));
 app.use(express.urlencoded({ extended: true, limit: '50kb' }));
 
 app.use((req, res, next) => {
-  res.setTimeout(15000);
+  const isCarUpload =
+    ['POST', 'PUT'].includes(req.method) &&
+    /^\/api\/admin\/cars(?:\/\d+)?$/.test(req.path);
+
+  res.setTimeout(isCarUpload ? 120000 : 15000);
   next();
 });
 

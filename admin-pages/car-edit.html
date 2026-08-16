@@ -42,13 +42,30 @@
         </header>
 
         <section class="admin-panel">
-          <form class="admin-form" id="carForm" enctype="multipart/form-data">
+          <form
+            class="admin-form"
+            id="carForm"
+            enctype="multipart/form-data"
+            novalidate
+          >
+            <div
+              class="admin-form-message"
+              id="carFormMessage"
+              role="alert"
+              tabindex="-1"
+              hidden
+            ></div>
+
             <div class="admin-form__section">
               <h2>Основное</h2>
 
+              <p class="admin-form__hint">
+                Поля со звёздочкой обязательны. Остальное можно заполнить позже.
+              </p>
+
               <div class="admin-form__grid">
                 <label class="admin-field">
-                  <span>Название</span>
+                  <span>Название <b aria-hidden="true">*</b></span>
                   <input
                     type="text"
                     name="title"
@@ -58,7 +75,7 @@
                 </label>
 
                 <label class="admin-field">
-                  <span>Slug</span>
+                  <span>Slug <b aria-hidden="true">*</b></span>
                   <input
                     type="text"
                     name="slug"
@@ -265,6 +282,11 @@
             <div class="admin-form__section">
               <h2>Фото</h2>
 
+              <p class="admin-form__hint">
+                JPG, PNG или WEBP, до 15 МБ каждое. В галерее может быть не
+                больше 15 фотографий.
+              </p>
+
               <div class="admin-form__grid">
                 <div class="admin-field">
                   <span>Превью для каталога</span>
@@ -278,42 +300,28 @@
                     />
 
                     <span class="admin-upload__button">Выбрать превью</span>
-                    <small id="previewImageName"
-                      >JPG, PNG или WEBP до 5 МБ</small
-                    >
+                    <small id="previewImageName">Файл не выбран</small>
                   </label>
 
                   <div
-                    class="admin-image-preview"
+                    class="admin-image-preview admin-image-preview--removable"
                     id="previewImagePreview"
                     hidden
                   >
                     <img src="" alt="Превью авто" />
+                    <button
+                      type="button"
+                      class="admin-gallery-card__delete"
+                      data-remove-single-image="previewImage"
+                      aria-label="Удалить превью"
+                    >
+                      ×
+                    </button>
                   </div>
                 </div>
 
                 <div class="admin-field">
-                  <span>Фото для карточки / старое поле</span>
-
-                  <label class="admin-upload" for="imageFile">
-                    <input
-                      type="file"
-                      id="imageFile"
-                      name="image"
-                      accept="image/jpeg,image/png,image/webp"
-                    />
-
-                    <span class="admin-upload__button">Выбрать фото</span>
-                    <small id="imageName">JPG, PNG или WEBP до 5 МБ</small>
-                  </label>
-
-                  <div class="admin-image-preview" id="imagePreview" hidden>
-                    <img src="" alt="Фото авто" />
-                  </div>
-                </div>
-
-                <div class="admin-field">
-                  <span>Главное фото страницы</span>
+                  <span>Главное фото автомобиля</span>
 
                   <label class="admin-upload" for="mainImageFile">
                     <input
@@ -326,15 +334,27 @@
                     <span class="admin-upload__button"
                       >Выбрать главное фото</span
                     >
-                    <small id="mainImageName">JPG, PNG или WEBP до 5 МБ</small>
+                    <small id="mainImageName">Файл не выбран</small>
                   </label>
 
-                  <div class="admin-image-preview" id="mainImagePreview" hidden>
+                  <div
+                    class="admin-image-preview admin-image-preview--removable"
+                    id="mainImagePreview"
+                    hidden
+                  >
                     <img src="" alt="Главное фото авто" />
+                    <button
+                      type="button"
+                      class="admin-gallery-card__delete"
+                      data-remove-single-image="mainImage"
+                      aria-label="Удалить главное фото"
+                    >
+                      ×
+                    </button>
                   </div>
                 </div>
 
-                <div class="admin-field">
+                <div class="admin-field admin-field--wide">
                   <span>Галерея</span>
 
                   <label class="admin-upload" for="galleryImagesFile">
@@ -348,16 +368,34 @@
 
                     <span class="admin-upload__button">Добавить фото</span>
                     <small id="galleryImagesName">
-                      Можно выбрать несколько фото
+                      Выбрано 0 из 15
                     </small>
                   </label>
+
+                  <div
+                    class="admin-gallery-existing"
+                    id="selectedGallery"
+                    hidden
+                  >
+                    <p class="admin-gallery-existing__title">
+                      Новые фотографии
+                      <span id="selectedGalleryCount">0 из 15</span>
+                    </p>
+
+                    <div
+                      class="admin-gallery-existing__grid"
+                      id="selectedGalleryGrid"
+                    ></div>
+                  </div>
+
                   <div
                     class="admin-gallery-existing"
                     id="existingGallery"
                     hidden
                   >
                     <p class="admin-gallery-existing__title">
-                      Загруженные фото
+                      Загруженные фотографии
+                      <span id="existingGalleryCount"></span>
                     </p>
 
                     <div
@@ -427,7 +465,7 @@
               </a>
 
               <button class="admin-button" type="submit" id="carSubmitButton">
-                Сохранить авто
+                Сохранить автомобиль
               </button>
             </div>
           </form>

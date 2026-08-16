@@ -883,3 +883,112 @@ img {
     }
   }
 }
+.admin-form__hint {
+  margin: -10px 0 20px;
+  color: rgba(244, 241, 245, 0.56);
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+.admin-field > span b {
+  color: #ff6a00;
+}
+
+.admin-form-message {
+  margin-bottom: 20px;
+  padding: 16px 18px;
+  border: 1px solid rgba(255, 59, 59, 0.42);
+  border-radius: 14px;
+  background: rgba(255, 59, 59, 0.1);
+  color: #ffc1c1;
+  line-height: 1.5;
+  scroll-margin-top: 20px;
+}
+
+.admin-form-message[hidden] {
+  display: none;
+}
+
+.admin-form-message strong {
+  display: block;
+  color: #ffffff;
+}
+
+.admin-form-message ul {
+  margin: 10px 0 0;
+  padding-left: 20px;
+}
+
+.admin-form-message--success {
+  border-color: rgba(54, 217, 111, 0.4);
+  background: rgba(54, 217, 111, 0.1);
+  color: #9dffbd;
+}
+
+.admin-field--invalid input,
+.admin-field--invalid textarea,
+.admin-field--invalid select,
+.admin-field--invalid .admin-upload__button {
+  border-color: #ff5959;
+  box-shadow: 0 0 0 4px rgba(255, 59, 59, 0.1);
+}
+
+.admin-field__error {
+  color: #ff9696 !important;
+  font-size: 13px !important;
+  font-weight: 700 !important;
+  line-height: 1.45;
+}
+
+.admin-image-preview--removable {
+  position: relative;
+  width: min(100%, 280px);
+}
+
+.admin-image-preview--removable img {
+  height: 170px;
+}
+
+.admin-gallery-existing__title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.admin-gallery-existing__title span {
+  color: #ff8a1c;
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.admin-gallery-card small {
+  display: block;
+  overflow: hidden;
+  padding: 9px 10px 10px;
+  color: rgba(244, 241, 245, 0.62);
+  font-size: 11px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+#selectedGallery {
+  border-color: rgba(255, 106, 0, 0.3);
+  background: rgba(255, 106, 0, 0.055);
+}
+
+@media (max-width: 560px) {
+  .admin-form__actions {
+    align-items: stretch;
+    flex-direction: column-reverse;
+  }
+
+  .admin-form__actions .admin-button {
+    width: 100%;
+  }
+
+  .admin-gallery-existing__title {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}

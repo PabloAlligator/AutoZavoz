@@ -9,6 +9,7 @@ const upload = require('../config/multer');
 const requireAdminAuth = require('../middleware/requireAdminAuth');
 
 const router = express.Router();
+const MAX_GALLERY_IMAGES = 15;
 
 const imageFields = [
   {
@@ -25,9 +26,60 @@ const imageFields = [
   },
   {
     name: 'galleryImages',
-    maxCount: 10,
+    maxCount: MAX_GALLERY_IMAGES,
   },
 ];
+
+function getUploadedFiles(req) {
+  return Object.values(req.files || {}).flat().filter(Boolean);
+}
+
+function deleteTemporaryFiles(req) {
+  getUploadedFiles(req).forEach((file) => {
+    if (!file.path || !fs.existsSync(file.path)) return;
+
+    try {
+      fs.unlinkSync(file.path);
+    } catch (error) {
+      if (error.code !== 'ENOENT') {
+        console.warn('Не удалось удалить временный файл:', file.path);
+      }
+    }
+  });
+}
+
+function handleCarUploads(req, res, next) {
+  upload.fields(imageFields)(req, res, (error) => {
+    if (!error) return next();
+
+    deleteTemporaryFiles(req);
+
+    const messages = {
+      LIMIT_FILE_SIZE: 'Одна из фотографий больше 15 МБ',
+      LIMIT_FILE_COUNT: `Можно загрузить не больше ${MAX_GALLERY_IMAGES} фотографий`,
+      LIMIT_UNEXPECTED_FILE: `В галерее может быть не больше ${MAX_GALLERY_IMAGES} фотографий`,
+      LIMIT_PART_COUNT: 'В форме слишком много данных',
+    };
+
+    const fieldName =
+      error.field === 'previewImage' || error.field === 'mainImage'
+        ? error.field
+        : 'galleryImages';
+    const message =
+      messages[error.code] ||
+      error.message ||
+      'Не удалось загрузить фотографии';
+
+    return res.status(400).json({
+      success: false,
+      code: error.code || 'IMAGE_UPLOAD_ERROR',
+      message,
+      errors: {
+        [fieldName]: message,
+      },
+    });
+  });
+}
 
 function normalizeString(value) {
   return String(value || '').trim();
@@ -105,12 +157,14 @@ function buildCarPayload(body) {
   if (title.length < 2) {
     return {
       error: 'Название автомобиля должно быть не короче 2 символов',
+      field: 'title',
     };
   }
 
   if (!isValidSlug(slug)) {
     return {
       error: 'Slug должен быть латиницей: toyota-land-cruiser-300-zx-2023',
+      field: 'slug',
     };
   }
 
@@ -172,34 +226,61 @@ async function optimizeImage(file, options = {}) {
   const quality = options.quality || 84;
 
   const uploadsDir = path.join(process.cwd(), 'uploads', 'cars');
-  const outputFilename = `optimized-${path.parse(file.filename).name}.webp`;
+  const outputFilename = `car-${path.parse(file.filename).name}.webp`;
   const outputPath = path.join(uploadsDir, outputFilename);
 
-  await sharp(file.path)
-    .resize({
-      width,
-      withoutEnlargement: true,
+  try {
+    await sharp(file.path, {
+      failOn: 'error',
+      limitInputPixels: 100_000_000,
+      sequentialRead: true,
     })
-    .webp({
-      quality,
-    })
-    .toFile(outputPath);
+      .rotate()
+      .resize({
+        width,
+        fit: 'inside',
+        withoutEnlargement: true,
+      })
+      .webp({
+        quality,
+        effort: 4,
+        smartSubsample: true,
+      })
+      .toFile(outputPath);
 
-  if (fs.existsSync(file.path)) {
-    try {
-      fs.unlinkSync(file.path);
-    } catch (error) {
-      if (
-        error.code !== 'ENOENT' &&
-        error.code !== 'EBUSY' &&
-        error.code !== 'EPERM'
-      ) {
-        console.warn('Не удалось удалить временный файл:', file.path);
+    return `/uploads/cars/${outputFilename}`;
+  } catch (error) {
+    if (fs.existsSync(outputPath)) {
+      fs.unlinkSync(outputPath);
+    }
+
+    const imageError = new Error(
+      `Не удалось обработать фотографию «${file.originalname}». Проверьте, что файл не повреждён.`,
+    );
+    imageError.code = 'SHARP_IMAGE_ERROR';
+    imageError.field = file.fieldname;
+    imageError.cause = error;
+    throw imageError;
+  } finally {
+    if (fs.existsSync(file.path)) {
+      try {
+        fs.unlinkSync(file.path);
+      } catch (error) {
+        if (error.code !== 'ENOENT') {
+          console.warn('Не удалось удалить временный файл:', file.path);
+        }
       }
     }
   }
+}
 
-  return `/uploads/cars/${outputFilename}`;
+async function optimizeRequestImage(req, file, options = {}) {
+  const imagePath = await optimizeImage(file, options);
+
+  req.optimizedCarFiles = req.optimizedCarFiles || [];
+  req.optimizedCarFiles.push(imagePath);
+
+  return imagePath;
 }
 
 function deleteUploadFile(filePath) {
@@ -233,96 +314,129 @@ function deleteUploadFiles(filePaths) {
 
 async function processCarImages(req, existingCar = null) {
   const previewImageFile = req.files?.previewImage?.[0];
-  const imageFile = req.files?.image?.[0];
-  const mainImageFile = req.files?.mainImage?.[0];
+  const mainImageFile = req.files?.mainImage?.[0] || req.files?.image?.[0];
 
   const data = {};
+  const replacedFiles = [];
 
   if (previewImageFile) {
-    const previewImage = await optimizeImage(previewImageFile, {
+    const previewImage = await optimizeRequestImage(req, previewImageFile, {
       width: 800,
       quality: 82,
     });
 
-    if (existingCar?.previewImage) {
-      deleteUploadFile(existingCar.previewImage);
-    }
-
     data.previewImage = previewImage;
-  }
 
-  if (imageFile) {
-    const image = await optimizeImage(imageFile, {
-      width: 1600,
-      quality: 86,
-    });
-
-    if (existingCar?.image) {
-      deleteUploadFile(existingCar.image);
+    if (existingCar?.previewImage) {
+      replacedFiles.push(existingCar.previewImage);
     }
+  } else if (normalizeBoolean(req.body.removePreviewImage)) {
+    data.previewImage = null;
 
-    data.image = image;
+    if (existingCar?.previewImage) {
+      replacedFiles.push(existingCar.previewImage);
+    }
   }
 
   if (mainImageFile) {
-    const mainImage = await optimizeImage(mainImageFile, {
+    const mainImage = await optimizeRequestImage(req, mainImageFile, {
       width: 1800,
       quality: 86,
     });
 
+    data.mainImage = mainImage;
+    data.image = mainImage;
+
     if (existingCar?.mainImage) {
-      deleteUploadFile(existingCar.mainImage);
+      replacedFiles.push(existingCar.mainImage);
     }
 
-    data.mainImage = mainImage;
+    if (existingCar?.image) {
+      replacedFiles.push(existingCar.image);
+    }
+  } else if (normalizeBoolean(req.body.removeMainImage)) {
+    data.mainImage = null;
+    data.image = null;
+
+    if (existingCar?.mainImage) {
+      replacedFiles.push(existingCar.mainImage);
+    }
+
+    if (existingCar?.image) {
+      replacedFiles.push(existingCar.image);
+    }
   }
 
-  if (!data.mainImage && data.image && !existingCar?.mainImage) {
-    data.mainImage = data.image;
-  }
-
-  return data;
+  return {
+    data,
+    replacedFiles,
+  };
 }
 
-async function processGalleryImages(req, carId) {
+async function mapWithConcurrency(items, concurrency, callback) {
+  const results = new Array(items.length);
+  let nextIndex = 0;
+
+  async function worker() {
+    while (nextIndex < items.length) {
+      const index = nextIndex;
+      nextIndex += 1;
+      results[index] = await callback(items[index], index);
+    }
+  }
+
+  await Promise.all(
+    Array.from({ length: Math.min(concurrency, items.length) }, () => worker()),
+  );
+
+  return results;
+}
+
+async function optimizeGalleryImages(req) {
   const galleryFiles = req.files?.galleryImages || [];
 
   if (!galleryFiles.length) {
-    return;
+    return [];
   }
 
-  const existingCount = await prisma.carImage.count({
-    where: {
-      carId,
-    },
+  const results = await mapWithConcurrency(galleryFiles, 2, async (file) => {
+    try {
+      return {
+        image: await optimizeRequestImage(req, file, {
+          width: 1800,
+          quality: 84,
+        }),
+      };
+    } catch (error) {
+      return { error };
+    }
   });
+  const failedResult = results.find((result) => result.error);
 
-  const images = [];
-
-  for (let index = 0; index < galleryFiles.length; index += 1) {
-    const file = galleryFiles[index];
-
-    const image = await optimizeImage(file, {
-      width: 1800,
-      quality: 86,
-    });
-
-    images.push({
-      carId,
-      image,
-      alt: null,
-      sortOrder: existingCount + index + 1,
-    });
+  if (failedResult) {
+    throw failedResult.error;
   }
 
-  if (images.length) {
-    await prisma.carImage.createMany({
-      data: images,
-    });
-  }
+  return results.map((result) => result.image);
 }
 
 function handlePrismaError(error, res, fallbackMessage) {
+  if (error.code === 'SHARP_IMAGE_ERROR') {
+    const fieldName =
+      error.field === 'previewImage' || error.field === 'mainImage'
+        ? error.field
+        : 'galleryImages';
+
+    return res.status(400).json({
+      success: false,
+      code: error.code,
+      message: error.message,
+      errors: {
+        [fieldName]: error.message,
+      },
+    });
+  }
+
   if (
     error instanceof Prisma.PrismaClientKnownRequestError &&
     error.code === 'P2002'
@@ -330,6 +444,9 @@ function handlePrismaError(error, res, fallbackMessage) {
     return res.status(409).json({
       success: false,
       message: 'Автомобиль с таким slug уже существует',
+      errors: {
+        slug: 'Этот slug уже используется другим автомобилем',
+      },
     });
   }
 
@@ -423,40 +540,52 @@ router.get('/admin/cars/:id', requireAdminAuth, async (req, res) => {
 router.post(
   '/admin/cars',
   requireAdminAuth,
-  upload.fields(imageFields),
+  handleCarUploads,
   async (req, res) => {
     try {
       const payload = buildCarPayload(req.body);
 
       if (payload.error) {
+        deleteTemporaryFiles(req);
+
         return res.status(400).json({
           success: false,
           message: payload.error,
+          errors: {
+            [payload.field]: payload.error,
+          },
         });
       }
 
-      const imageData = await processCarImages(req);
+      const imageResult = await processCarImages(req);
+      const galleryImages = await optimizeGalleryImages(req);
+      const createdCar = await prisma.$transaction(async (transaction) => {
+        const createdCar = await transaction.car.create({
+          data: {
+            ...payload.data,
+            ...imageResult.data,
+          },
+        });
 
-      const car = await prisma.car.create({
-        data: {
-          ...payload.data,
-          ...imageData,
-        },
-      });
+        if (galleryImages.length) {
+          await transaction.carImage.createMany({
+            data: galleryImages.map((image, index) => ({
+              carId: createdCar.id,
+              image,
+              alt: null,
+              sortOrder: index + 1,
+            })),
+          });
+        }
 
-      await processGalleryImages(req, car.id);
-
-      const createdCar = await prisma.car.findUnique({
-        where: {
-          id: car.id,
-        },
-        include: {
-          images: {
-            orderBy: {
-              sortOrder: 'asc',
+        return transaction.car.findUnique({
+          where: { id: createdCar.id },
+          include: {
+            images: {
+              orderBy: { sortOrder: 'asc' },
             },
           },
-        },
+        });
       });
 
       return res.status(201).json({
@@ -464,6 +593,8 @@ router.post(
         car: createdCar,
       });
     } catch (error) {
+      deleteTemporaryFiles(req);
+      deleteUploadFiles(req.optimizedCarFiles || []);
       return handlePrismaError(error, res, 'Ошибка создания автомобиля');
     }
   },
@@ -472,12 +603,14 @@ router.post(
 router.put(
   '/admin/cars/:id',
   requireAdminAuth,
-  upload.fields(imageFields),
+  handleCarUploads,
   async (req, res) => {
     try {
       const carId = Number(req.params.id);
 
       if (!Number.isInteger(carId) || carId <= 0) {
+        deleteTemporaryFiles(req);
+
         return res.status(400).json({
           success: false,
           message: 'Некорректный ID автомобиля',
@@ -491,6 +624,8 @@ router.put(
       });
 
       if (!existingCar) {
+        deleteTemporaryFiles(req);
+
         return res.status(404).json({
           success: false,
           message: 'Автомобиль не найден',
@@ -500,44 +635,85 @@ router.put(
       const payload = buildCarPayload(req.body);
 
       if (payload.error) {
+        deleteTemporaryFiles(req);
+
         return res.status(400).json({
           success: false,
           message: payload.error,
+          errors: {
+            [payload.field]: payload.error,
+          },
         });
       }
 
-      const imageData = await processCarImages(req, existingCar);
-
-      await prisma.car.update({
-        where: {
-          id: carId,
-        },
-        data: {
-          ...payload.data,
-          ...imageData,
-        },
+      const existingGalleryCount = await prisma.carImage.count({
+        where: { carId },
       });
+      const newGalleryCount = req.files?.galleryImages?.length || 0;
 
-      await processGalleryImages(req, carId);
+      if (existingGalleryCount + newGalleryCount > MAX_GALLERY_IMAGES) {
+        deleteTemporaryFiles(req);
 
-      const updatedCar = await prisma.car.findUnique({
-        where: {
-          id: carId,
-        },
-        include: {
-          images: {
-            orderBy: {
-              sortOrder: 'asc',
+        return res.status(400).json({
+          success: false,
+          message: `В галерее может быть не больше ${MAX_GALLERY_IMAGES} фотографий`,
+          errors: {
+            galleryImages: `Удалите лишние фотографии. Сейчас загружено ${existingGalleryCount}, выбрано ещё ${newGalleryCount}.`,
+          },
+        });
+      }
+
+      const imageResult = await processCarImages(req, existingCar);
+      const galleryImages = await optimizeGalleryImages(req);
+
+      const updatedCar = await prisma.$transaction(async (transaction) => {
+        await transaction.car.update({
+          where: { id: carId },
+          data: {
+            ...payload.data,
+            ...imageResult.data,
+          },
+        });
+
+        if (galleryImages.length) {
+          await transaction.carImage.createMany({
+            data: galleryImages.map((image, index) => ({
+              carId,
+              image,
+              alt: null,
+              sortOrder: existingGalleryCount + index + 1,
+            })),
+          });
+        }
+
+        return transaction.car.findUnique({
+          where: { id: carId },
+          include: {
+            images: {
+              orderBy: { sortOrder: 'asc' },
             },
           },
-        },
+        });
       });
+
+      const activePrimaryImages = [
+        updatedCar.previewImage,
+        updatedCar.image,
+        updatedCar.mainImage,
+      ];
+      deleteUploadFiles(
+        imageResult.replacedFiles.filter(
+          (imagePath) => !activePrimaryImages.includes(imagePath),
+        ),
+      );
 
       return res.status(200).json({
         success: true,
         car: updatedCar,
       });
     } catch (error) {
+      deleteTemporaryFiles(req);
+      deleteUploadFiles(req.optimizedCarFiles || []);
       return handlePrismaError(error, res, 'Ошибка обновления автомобиля');
     }
   },
@@ -624,13 +800,13 @@ router.delete(
         });
       }
 
-      deleteUploadFile(image.image);
-
       await prisma.carImage.delete({
         where: {
           id: image.id,
         },
       });
+
+      deleteUploadFile(image.image);
 
       return res.status(200).json({
         success: true,
@@ -674,18 +850,20 @@ router.delete('/admin/cars/:id', requireAdminAuth, async (req, res) => {
       });
     }
 
-    deleteUploadFiles([
+    const carFiles = [
       car.previewImage,
       car.image,
       car.mainImage,
       ...car.images.map((item) => item.image),
-    ]);
+    ];
 
     await prisma.car.delete({
       where: {
         id: carId,
       },
     });
+
+    deleteUploadFiles(carFiles);
 
     return res.status(200).json({
       success: true,
